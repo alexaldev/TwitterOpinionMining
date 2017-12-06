@@ -1,14 +1,19 @@
 import domain.TweetModelParser;
+import repository.MaxCountReachedException;
 import repository.MongoRepository;
 import twitter.Constants;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TweetsCollector implements StatusListener{
+public class TweetsCollector implements StatusListener {
+
+    private static final int MAX_TWEETS_PER_COLLECTION = 1500;
 
     private TwitterStream streamInstance;
     private MongoRepository repository;
     private String filterKeyword;
+
+
 
     static TweetsCollector newInstance(String keyword,
                                        int mongoDBPort){
@@ -31,7 +36,7 @@ public class TweetsCollector implements StatusListener{
 
         this.filterKeyword = keyword;
 
-        this.repository = MongoRepository.newInstance("localhost",keyword,mongoDBPort);
+        this.repository = MongoRepository.newInstance("localhost",keyword,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
     }
 
 
@@ -42,15 +47,19 @@ public class TweetsCollector implements StatusListener{
      */
     public void startCollecting(){
 
-        System.out.println("Initiating repository connection");
-
         streamInstance.addListener(this);
 
         System.out.println("Starting listening for tweets...");
 
         streamInstance.filter(filterKeyword);
 
+    }
 
+    private void closeConnectionsAndExit(){
+        streamInstance.removeListener(this);
+        streamInstance = null;
+        this.repository.disconnect();
+        System.exit(0);
     }
 
     void printCollection(){
@@ -63,7 +72,7 @@ public class TweetsCollector implements StatusListener{
 
     /**
      * Check if the given tweet object provided by the stream should be saved in the repository.
-     * Current configuration is that the tweet MUST be in the English language.
+     * Current configuration is that the tweet MUST be in the English language and not a retweet.
      * @param status the tweet object
      * @return true if in English language, otherwise false.
      */
@@ -87,9 +96,15 @@ public class TweetsCollector implements StatusListener{
             System.out.println("Tweet accepted. Parsing and saving to repository...");
 
             //If so, we should parse it the to local tweet model first and then save it immediately in the repository
-            this.repository.addItem(
-                    TweetModelParser.parseFrom(status)
-            );
+            try {
+                this.repository.addItem(
+                        TweetModelParser.parseFrom(status)
+                );
+            } catch (MaxCountReachedException e) {
+                System.out.println("Max count of collection reached: " + MAX_TWEETS_PER_COLLECTION);
+                System.out.println("Thank you for the collection, exiting...");
+                this.closeConnectionsAndExit();
+            }
         }
         else {
             System.out.println("Tweet rejected");
