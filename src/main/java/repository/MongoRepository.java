@@ -30,9 +30,10 @@ public class MongoRepository {
      */
     public static MongoRepository newInstance(String host,
                                               String collectionName,
-                                              int port){
+                                              int port,
+                                              int maxCollectionCount){
 
-        return new MongoRepository(host,collectionName,port);
+        return new MongoRepository(host,collectionName,port,maxCollectionCount);
     }
 
     // --------------- END OF FACTORY -------------------------->
@@ -43,10 +44,13 @@ public class MongoRepository {
     private MongoDatabase mongoDatabase;
     private String collectionName;
     private MongoCollection<TweetModel> collection;
+    private long maxCollectionCount;
+    private long currentEntriesInCollection;
 
     private MongoRepository(String host,
                             String collectionName,
-                            int port){
+                            int port,
+                            long maxCollectionCount){
 
         System.out.println("Initiating Mongo client on port: " + port);
 
@@ -66,7 +70,11 @@ public class MongoRepository {
                 getCollection(collectionName,TweetModel.class)
                 .withCodecRegistry(pojoCodecRegistry);
 
-        System.out.println("Mongo Repository setup ready on collection: " + collectionName);
+        this.currentEntriesInCollection = this.collection.count();
+        this.maxCollectionCount = maxCollectionCount;
+
+        System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
+
 
     }
 
@@ -74,15 +82,27 @@ public class MongoRepository {
      * Just cleanup things, no necessary still
      */
     public void disconnect(){
+        this.mongoDatabase = null;
+        this.mongoClient = null;
+        this.collection = null;
+    }
+
+    public void addItem(TweetModel tweet) throws MaxCountReachedException{
+
+        if (this.currentEntriesInCollection < maxCollectionCount){
+            System.out.println("Adding tweet #" + ++currentEntriesInCollection);
+            this.collection.insertOne(tweet);
+        }
+        else {
+            throw new MaxCountReachedException(collectionName);
+        }
 
     }
 
-    public void addItem(TweetModel tweet){
-        this.collection.insertOne(tweet);
-    }
-
-    public void addItems(List<TweetModel> tweetModelList){
-
+    public void addItems(List<TweetModel> tweetModelList) throws MaxCountReachedException{
+        for (TweetModel tweetModel : tweetModelList) {
+            addItem(tweetModel);
+        }
     }
 
     public List<TweetModel> query(MongoQuery query){

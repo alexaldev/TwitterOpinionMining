@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="core_main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/core_main_jar</output-path>
+    <root id="archive" name="core_main.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="core_main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/3.5.0/968cbc3dffd79cae1136f751079ad39315d09d99/mongodb-driver-core-3.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.twitter4j/twitter4j-async/4.0.4/3c11511b9f5864d611642b9c1fd52bb8b5efbe30/twitter4j-async-4.0.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/bson/3.5.0/b639bed341c069622c39f14c5ad5bd42b4655337/bson-3.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.twitter4j/twitter4j-stream/4.0.4/e9c442a779c65cef8872e8676bf693ad88379086/twitter4j-stream-4.0.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.twitter4j/twitter4j-core/4.0.4/1f3c896c7b2f20c51103078ccf0bc2ea97ac012a/twitter4j-core-4.0.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver/3.5.0/9d6e31e3073aa8c999ba609aa76185e46f226bdb/mongodb-driver-3.5.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

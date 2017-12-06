@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.twitter4j:twitter4j-async:4.0.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.twitter4j/twitter4j-async/4.0.4/3c11511b9f5864d611642b9c1fd52bb8b5efbe30/twitter4j-async-4.0.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.twitter4j/twitter4j-async/4.0.4/16fabd2c6315b8958d199f01d5674ae11a70946c/twitter4j-async-4.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
