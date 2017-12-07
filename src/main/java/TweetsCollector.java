@@ -9,18 +9,25 @@ public class TweetsCollector implements StatusListener {
 
     private static final int MAX_TWEETS_PER_COLLECTION = 1500;
 
-    private TwitterStream streamInstance;
-    private MongoRepository repository;
-    private String filterKeyword;
+    private final TwitterStream streamInstance;
+    private final MongoRepository repository;
+    private final String collectionName;
+    private final int mongoDBPort;
 
-
-
-    static TweetsCollector newInstance(String keyword,
+    /**
+     * Creates a new instance of the collector. Currently you cannot
+     * provide a different database name besides the default and you should deal with this fact straight.
+     * @param collectionName the collection of the default database you want to reference.
+     * @param mongoDBPort the port which Mongo is open right now.
+     * @return
+     */
+    static TweetsCollector newInstance(String collectionName,
                                        int mongoDBPort){
-        return new TweetsCollector(keyword,mongoDBPort);
+
+        return new TweetsCollector(collectionName,mongoDBPort);
     }
 
-    private TweetsCollector(String keyword,
+    private TweetsCollector(String collectionName,
                             int mongoDBPort){
 
         //If we use a default configuration, let's set it up here
@@ -34,9 +41,15 @@ public class TweetsCollector implements StatusListener {
 
         streamInstance = new TwitterStreamFactory(builder.build()).getInstance();
 
-        this.filterKeyword = keyword;
+        //Initialize the repository on the local host.
+        this.repository = MongoRepository.newInstance("localhost",collectionName,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
 
-        this.repository = MongoRepository.newInstance("localhost",keyword,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
+        this.collectionName = collectionName;
+
+        this.mongoDBPort = mongoDBPort;
+
+
+
     }
 
 
@@ -51,24 +64,23 @@ public class TweetsCollector implements StatusListener {
 
         System.out.println("Starting listening for tweets...");
 
-        streamInstance.filter(filterKeyword);
+        streamInstance.filter(collectionName);
 
     }
 
     private void closeConnectionsAndExit(){
         streamInstance.removeListener(this);
-        streamInstance = null;
         this.repository.disconnect();
         System.exit(0);
     }
 
+    /**
+     * Prints the collection you defined when initiating the collector.
+     */
     void printCollection(){
         this.repository.printCollection();
     }
 
-    void dropCollection(String collectionName){
-        this.repository.dropCollection(collectionName);
-    }
 
     /**
      * Check if the given tweet object provided by the stream should be saved in the repository.

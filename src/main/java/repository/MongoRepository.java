@@ -22,7 +22,7 @@ public class MongoRepository {
 
 
     /**
-     * Factory class to create instances.
+     * Factory method to create instances.
      * @param host
      * @param collectionName
      * @param port
@@ -75,7 +75,6 @@ public class MongoRepository {
 
         System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
 
-
     }
 
     /**
@@ -110,6 +109,7 @@ public class MongoRepository {
     }
 
     public void printCollection(){
+
         Block<TweetModel> printBlock = tweetModel -> System.out.println(tweetModel.toString());
 
         this.collection.find().forEach(printBlock);

@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Created by alexaldev
  * Date: 28/11/2017
  */
-public class Main {
+public class MainCollect {
 
     private static final String WELCOME_MESSAGE =
             "\t\t\t========MO.TE.CO========\n" +
