@@ -1,9 +1,13 @@
+import com.mongodb.client.MongoCursor;
+import domain.TweetModel;
 import domain.TweetModelParser;
 import repository.MaxCountReachedException;
 import repository.MongoRepository;
 import twitter.Constants;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
+
+import java.util.Iterator;
 
 public class TweetsCollector implements StatusListener {
 
@@ -48,9 +52,8 @@ public class TweetsCollector implements StatusListener {
 
         this.mongoDBPort = mongoDBPort;
 
-
-
     }
+
 
 
     /**

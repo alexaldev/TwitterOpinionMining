@@ -2,6 +2,7 @@ package repository;
 
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import domain.TweetModel;
@@ -20,6 +21,14 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
  */
 public class MongoRepository {
 
+    private static final String DEFAULT_DATABASE_NAME = "tweetsDb";
+
+    private MongoClient mongoClient;
+    private MongoDatabase mongoDatabase;
+    private String collectionName;
+    private MongoCollection<TweetModel> collection;
+    private long maxCollectionCount;
+    private long currentEntriesInCollection;
 
     /**
      * Factory method to create instances.
@@ -36,23 +45,12 @@ public class MongoRepository {
         return new MongoRepository(host,collectionName,port,maxCollectionCount);
     }
 
-    // --------------- END OF FACTORY -------------------------->
-
-    private static final String DEFAULT_DATABASE_NAME = "tweetsDb";
-
-    private MongoClient mongoClient;
-    private MongoDatabase mongoDatabase;
-    private String collectionName;
-    private MongoCollection<TweetModel> collection;
-    private long maxCollectionCount;
-    private long currentEntriesInCollection;
-
     private MongoRepository(String host,
                             String collectionName,
                             int port,
                             long maxCollectionCount){
 
-        System.out.println("Initiating Mongo client on port: " + port);
+           System.out.println("Initiating Mongo client on port: " + port);
 
         //Initiate client and database reference
         this.mongoClient = new MongoClient(host,port);
@@ -75,6 +73,10 @@ public class MongoRepository {
 
         System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
 
+    }
+
+    public FindIterable<TweetModel> getCollectionIterable(){
+        return this.collection.find();
     }
 
     /**
