@@ -11,7 +11,7 @@ public class MainTransform {
 
         TweetModel tweetModel = new TweetModel.Builder()
                 .setTweetID(102)
-                .setTweetText("Today 124allafi we  ... &they tried too put a bomb into Exacrhia and they were dissapointed")
+                .setTweetText("It was awesome so god damn!111!! awesome the celebrations were ... AWESOME ")
                 .create();
 
         System.out.println("Transforming tweet...");
