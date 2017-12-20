@@ -21,5 +21,8 @@ dependencies {
 
     compile group: 'org.twitter4j', name: 'twitter4j-async', version: '4.0.4'
 
+    // https://mvnrepository.com/artifact/com.beust/jcommander
+    compile group: 'com.beust', name: 'jcommander', version: '1.72'
+
 
 }

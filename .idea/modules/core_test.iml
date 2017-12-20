@@ -14,6 +14,7 @@
     <orderEntry type="library" name="Gradle: org.twitter4j:twitter4j-core:4.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.twitter4j:twitter4j-stream:4.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.twitter4j:twitter4j-async:4.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.beust:jcommander:1.72" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:bson:3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: org.mongodb:mongodb-driver-core:3.5.0" level="project" />
