@@ -16,7 +16,6 @@ public class TweetsCollector implements StatusListener {
     private final TwitterStream streamInstance;
     private final MongoRepository repository;
     private final String collectionName;
-    private final int mongoDBPort;
 
     /**
      * Creates a new instance of the collector. Currently you cannot
@@ -25,13 +24,15 @@ public class TweetsCollector implements StatusListener {
      * @param mongoDBPort the port which Mongo is open right now.
      * @return
      */
-    static TweetsCollector newInstance(String collectionName,
+    static TweetsCollector newInstance(String mongoDBHost,
+                                       String collectionName,
                                        int mongoDBPort){
 
-        return new TweetsCollector(collectionName,mongoDBPort);
+        return new TweetsCollector(mongoDBHost,collectionName,mongoDBPort);
     }
 
-    private TweetsCollector(String collectionName,
+    private TweetsCollector(String mongoDBHost,
+                            String collectionName,
                             int mongoDBPort){
 
         //If we use a default configuration, let's set it up here
@@ -46,12 +47,9 @@ public class TweetsCollector implements StatusListener {
         streamInstance = new TwitterStreamFactory(builder.build()).getInstance();
 
         //Initialize the repository on the local host.
-        this.repository = MongoRepository.newInstance("localhost",collectionName,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
+        this.repository = MongoRepository.newInstance(mongoDBHost,collectionName,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
 
         this.collectionName = collectionName;
-
-        this.mongoDBPort = mongoDBPort;
-
     }
 
 
@@ -79,9 +77,11 @@ public class TweetsCollector implements StatusListener {
 
     /**
      * Prints the collection you defined when initiating the collector.
+     *
+     * @param s: short printing
      */
-    void printCollection(){
-        this.repository.printCollection();
+    void printCollection(boolean s){
+        this.repository.printCollection(s);
     }
 
 
@@ -103,12 +103,14 @@ public class TweetsCollector implements StatusListener {
     @Override
     public void onStatus(Status status) {
 
-        System.out.println("Tweet received");
+        //DEBUG
+        //System.out.println("Tweet received");
 
         //First we must check that the tweet contained is in the English language
         if (tweetAccepted(status)){
 
-            System.out.println("Tweet accepted. Parsing and saving to repository...");
+            //DEBUG
+            //System.out.println("Tweet accepted. Parsing and saving to repository...");
 
             //If so, we should parse it the to local tweet model first and then save it immediately in the repository
             try {
@@ -122,7 +124,8 @@ public class TweetsCollector implements StatusListener {
             }
         }
         else {
-            System.out.println("Tweet rejected");
+            //DEBUG
+            //System.out.println("Tweet rejected");
         }
 
 

@@ -91,7 +91,8 @@ public class MongoRepository {
     public void addItem(TweetModel tweet) throws MaxCountReachedException{
 
         if (this.currentEntriesInCollection < maxCollectionCount){
-            System.out.println("Adding tweet #" + ++currentEntriesInCollection);
+            //DEBUG
+            //System.out.println("Adding tweet #" + ++currentEntriesInCollection);
             this.collection.insertOne(tweet);
         }
         else {
@@ -110,11 +111,18 @@ public class MongoRepository {
         return query.getResults();
     }
 
-    public void printCollection(){
+    public void printCollection(boolean s){
+        int MAXITEMSPRINT = 5;
+        long limit = collection.count();
+
+        if (s)
+            limit = (MAXITEMSPRINT > limit) ? limit : MAXITEMSPRINT;
 
         Block<TweetModel> printBlock = tweetModel -> System.out.println(tweetModel.toString());
 
-        this.collection.find().forEach(printBlock);
+        this.collection.find().limit((int) limit).forEach(printBlock);
+
+        System.out.println("Printed " + limit + " out of " + collection.count() + " items.");
     }
 
     public void dropCollection(String collectionName){

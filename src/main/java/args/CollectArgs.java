@@ -6,7 +6,7 @@ import com.beust.jcommander.Parameters;
 @Parameters(commandDescription = "Collects tweets and stores them in a mongoDB collection")
 public class CollectArgs extends Args {
 
-    @Parameter(names = {"-t", "--topic"}, required = true, description = "Hashtag or word to search Tweeter")
+    @Parameter(required = true, description = "<search keyword>")
     private String hashtag;
 
     public String getHashtag() {

@@ -1,7 +1,12 @@
 import java.util.Scanner;
 import args.*;
 import com.beust.jcommander.JCommander;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoNamespace;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import domain.TweetModel;
+import repository.MongoRepository;
 
 /**
  * CLASS DESCRIPTION HERE
@@ -44,10 +49,10 @@ public class Main {
         } else {
             Args command = (Args) jc.getCommands().get(jc.getParsedCommand()).getObjects().get(0);
 
-            if (command.wantsHelp())
+            if (command.wantsHelp()) {
                 jc.usage(jc.getParsedCommand());
-
-            System.exit(1);
+                System.exit(1);
+            }
         }
 
         /* <--- End of CLI parsing */
@@ -55,14 +60,14 @@ public class Main {
         switch (jc.getParsedCommand()) {
             case "collect":
 
-                TweetsCollector.newInstance(collectArgs.getHashtag(), collectArgs.getMongoPort())
+                TweetsCollector.newInstance(collectArgs.getMongoHost(), collectArgs.getHashtag(), collectArgs.getMongoPort())
                         .startCollecting();
 
                 break;
             case "print-collection":
 
-                TweetsCollector.newInstance(printArgs.getHashtag(), printArgs.getMongoPort())
-                        .printCollection();
+                TweetsCollector.newInstance(printArgs.getMongoHost(), printArgs.getHashtag(), printArgs.getMongoPort())
+                        .printCollection(printArgs.isShort());
 
                 break;
             case "transform":
