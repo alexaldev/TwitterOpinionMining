@@ -60,13 +60,13 @@ public class Main {
         switch (jc.getParsedCommand()) {
             case "collect":
 
-                TweetsCollector.newInstance(collectArgs.getMongoHost(), collectArgs.getHashtag(), collectArgs.getMongoPort())
+                TweetsCollector.newInstance(collectArgs.getHashtag(), collectArgs.getMongoHost(), collectArgs.getMongoPort())
                         .startCollecting();
 
                 break;
             case "print-collection":
 
-                TweetsCollector.newInstance(printArgs.getMongoHost(), printArgs.getHashtag(), printArgs.getMongoPort())
+                TweetsCollector.newInstance(printArgs.getHashtag(), printArgs.getMongoHost(), printArgs.getMongoPort())
                         .printCollection(printArgs.isShort());
 
                 break;

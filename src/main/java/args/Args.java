@@ -2,6 +2,9 @@ package args;
 
 import com.beust.jcommander.Parameter;
 
+/**
+ * Base Class for commands arguments Classes
+ */
 public class Args {
 
     @Parameter(names = {"-h", "--help"}, help = true, description = "Prints help message")

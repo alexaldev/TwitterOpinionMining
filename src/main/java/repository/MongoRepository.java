@@ -15,13 +15,16 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 /**
- * CLASS DESCRIPTION HERE
+ * Wraps connection to a mongo collection
  * Created by alexaldev
  * Date: 28/11/2017
  */
 public class MongoRepository {
 
     private static final String DEFAULT_DATABASE_NAME = "tweetsDb";
+    private static final String DEFAULT_MONGO_HOST = "localhost";
+    private static final int DEFAULT_MONGO_PORT = 27017;
+    private static final int DEFAULT_MAX_TWEETS_PER_COLLECTION = 1500;
 
     private MongoClient mongoClient;
     private MongoDatabase mongoDatabase;
@@ -32,38 +35,48 @@ public class MongoRepository {
 
     /**
      * Factory method to create instances.
-     * @param host
-     * @param collectionName
-     * @param port
-     * @return
      */
-    public static MongoRepository newInstance(String host,
-                                              String collectionName,
+    public static MongoRepository newInstance(String collectionName) {
+        return MongoRepository.newInstance(collectionName, DEFAULT_DATABASE_NAME);
+    }
+    public static MongoRepository newInstance(String collectionName, String database) {
+        return MongoRepository.newInstance(collectionName, database, DEFAULT_MONGO_HOST);
+    }
+    public static MongoRepository newInstance(String collectionName, String database, String host) {
+        return MongoRepository.newInstance(collectionName, database, host, DEFAULT_MONGO_PORT);
+    }
+    public static MongoRepository newInstance(String collectionName, String database, String host, int port) {
+        return MongoRepository.newInstance(collectionName, database, host, port, DEFAULT_MAX_TWEETS_PER_COLLECTION);
+    }
+    public static MongoRepository newInstance(String collectionName,
+                                              String database,
+                                              String host,
                                               int port,
                                               int maxCollectionCount){
 
-        return new MongoRepository(host,collectionName,port,maxCollectionCount);
+        return new MongoRepository(collectionName,database,host,port,maxCollectionCount);
     }
 
-    private MongoRepository(String host,
-                            String collectionName,
-                            int port,
-                            long maxCollectionCount){
 
-           System.out.println("Initiating Mongo client on port: " + port);
+    private MongoRepository(String collectionName,
+                            String database,
+                            String host,
+                            int port,
+                            long maxCollectionCount) {
+
+        //DEBUG
+        //System.out.println("Initiating Mongo client on port: " + port);
 
         //Initiate client and database reference
         this.mongoClient = new MongoClient(host,port);
-
-        this.mongoDatabase = this.mongoClient.getDatabase(DEFAULT_DATABASE_NAME);
-
+        this.mongoDatabase = this.mongoClient.getDatabase(database);
         this.collectionName = collectionName;
 
         //Configure a POJO codec registry to automatically parse Tweet model to Mongo Document model
-
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
+        // Get or create collection in Database
         this.collection = mongoDatabase.
                 getCollection(collectionName,TweetModel.class)
                 .withCodecRegistry(pojoCodecRegistry);
@@ -72,8 +85,8 @@ public class MongoRepository {
         this.maxCollectionCount = maxCollectionCount;
 
         System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
-
     }
+
 
     public FindIterable<TweetModel> getCollectionIterable(){
         return this.collection.find();
@@ -101,22 +114,20 @@ public class MongoRepository {
 
     }
 
-    public void addItems(List<TweetModel> tweetModelList) throws MaxCountReachedException{
-        for (TweetModel tweetModel : tweetModelList) {
-            addItem(tweetModel);
-        }
-    }
-
     public List<TweetModel> query(MongoQuery query){
         return query.getResults();
     }
 
+    /**
+     * Prints items of collection
+     * @param s: Short printing: Will be print: 5 items, total count of items
+     */
     public void printCollection(boolean s){
-        int MAXITEMSPRINT = 5;
+        int MAX_ITEMS_PRINT = 5;
         long limit = collection.count();
 
         if (s)
-            limit = (MAXITEMSPRINT > limit) ? limit : MAXITEMSPRINT;
+            limit = (MAX_ITEMS_PRINT > limit) ? limit : MAX_ITEMS_PRINT;
 
         Block<TweetModel> printBlock = tweetModel -> System.out.println(tweetModel.toString());
 

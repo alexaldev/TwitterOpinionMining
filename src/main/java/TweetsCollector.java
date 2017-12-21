@@ -12,6 +12,7 @@ import java.util.Iterator;
 public class TweetsCollector implements StatusListener {
 
     private static final int MAX_TWEETS_PER_COLLECTION = 1500;
+    private static final String DATABASE_NAME = "tweetsDb";
 
     private final TwitterStream streamInstance;
     private final MongoRepository repository;
@@ -24,15 +25,15 @@ public class TweetsCollector implements StatusListener {
      * @param mongoDBPort the port which Mongo is open right now.
      * @return
      */
-    static TweetsCollector newInstance(String mongoDBHost,
-                                       String collectionName,
+    static TweetsCollector newInstance(String collectionName,
+                                       String mongoDBHost,
                                        int mongoDBPort){
 
-        return new TweetsCollector(mongoDBHost,collectionName,mongoDBPort);
+        return new TweetsCollector(collectionName,mongoDBHost,mongoDBPort);
     }
 
-    private TweetsCollector(String mongoDBHost,
-                            String collectionName,
+    private TweetsCollector(String collectionName,
+                            String mongoDBHost,
                             int mongoDBPort){
 
         //If we use a default configuration, let's set it up here
@@ -47,7 +48,7 @@ public class TweetsCollector implements StatusListener {
         streamInstance = new TwitterStreamFactory(builder.build()).getInstance();
 
         //Initialize the repository on the local host.
-        this.repository = MongoRepository.newInstance(mongoDBHost,collectionName,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
+        this.repository = MongoRepository.newInstance(collectionName,DATABASE_NAME,mongoDBHost,mongoDBPort,MAX_TWEETS_PER_COLLECTION);
 
         this.collectionName = collectionName;
     }
