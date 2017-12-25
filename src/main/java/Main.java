@@ -1,10 +1,5 @@
-import java.util.Scanner;
 import args.*;
 import com.beust.jcommander.JCommander;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoNamespace;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import domain.TweetModel;
 import repository.MongoRepository;
 
@@ -71,7 +66,7 @@ public class Main {
 
                 break;
             case "transform":
-
+/*
                 TweetModel tweetModel = new TweetModel.Builder()
                         .setTweetID(102)
                         .setTweetText("It was awesome so god damn!111!! awesome the celebrations were ... AWESOME ")
@@ -81,7 +76,9 @@ public class Main {
                 tweetModel = TweetTransformer.newInstance().transformTweet(tweetModel);
 
                 System.out.println(tweetModel.getTweetText());
+*/
 
+                SentimentAnalysis.analyze(MongoRepository.newInstance(transformArgs.getHashtag()));
                 break;
         }
 

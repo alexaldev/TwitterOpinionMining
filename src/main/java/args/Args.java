@@ -16,6 +16,13 @@ public class Args {
     @Parameter(names = {"-p", "--mongoPort"}, description = "MongoDB Port")
     private int mongoPort = 27017;
 
+    @Parameter(required = true, description = "<search keyword>")
+    private String hashtag;
+
+    public String getHashtag() {
+        return hashtag;
+    }
+
     public boolean wantsHelp() {
         return help;
     }

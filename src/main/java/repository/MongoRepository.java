@@ -87,6 +87,9 @@ public class MongoRepository {
         System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
     }
 
+    public String getCollectionName() {
+        return collectionName;
+    }
 
     public FindIterable<TweetModel> getCollectionIterable(){
         return this.collection.find();

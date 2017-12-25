@@ -21,6 +21,14 @@ public class TransformUtil {
         return s.replaceAll("[^A-Za-z]+", " ");
     }
 
+    public static String clearLinks(String s) {
+        return s.replaceAll("http\\S+", "");
+    }
+
+    public static String removeCollectionKeyword(String tweet, String collectionName) {
+        return tweet.replaceAll(collectionName, "");
+    }
+
     public static String normalize(String tweet){
         return tweet.toLowerCase();
     }
