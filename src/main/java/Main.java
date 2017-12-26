@@ -15,6 +15,7 @@ public class Main {
             "\t\t\t========MO.TE.CO========\n" +
             "\t========MongoTweets Collector========\n" +
             "Program to collect tweets(duhh..) based on the given hashtag and inserts it in a mongoDB with an open port.\n";
+    private static final String DATABASE_NAME = "tweetsDb";
 
     public static void main(String[] args){
 
@@ -55,13 +56,13 @@ public class Main {
         switch (jc.getParsedCommand()) {
             case "collect":
 
-                TweetsCollector.newInstance(collectArgs.getHashtag(), collectArgs.getMongoHost(), collectArgs.getMongoPort())
+                TweetsCollector.newInstance(collectArgs.getHashtag(), DATABASE_NAME, collectArgs.getMongoHost(), collectArgs.getMongoPort())
                         .startCollecting();
 
                 break;
             case "print-collection":
 
-                TweetsCollector.newInstance(printArgs.getHashtag(), printArgs.getMongoHost(), printArgs.getMongoPort())
+                TweetsCollector.newInstance(printArgs.getHashtag(),DATABASE_NAME, printArgs.getMongoHost(), printArgs.getMongoPort())
                         .printCollection(printArgs.isShort());
 
                 break;
@@ -77,8 +78,9 @@ public class Main {
 
                 System.out.println(tweetModel.getTweetText());
 */
-
-                SentimentAnalysis.analyze(MongoRepository.newInstance(transformArgs.getHashtag()));
+                SentimentAnalysis sa = new SentimentAnalysis(MongoRepository.newInstance(transformArgs.getHashtag()));
+                sa.analyze();
+                sa.printFrequents(50);
                 break;
         }
 

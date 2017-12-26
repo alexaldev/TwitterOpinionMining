@@ -24,5 +24,13 @@ dependencies {
     // https://mvnrepository.com/artifact/com.beust/jcommander
     compile group: 'com.beust', name: 'jcommander', version: '1.72'
 
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20171018'
+
+    // https://mvnrepository.com/artifact/org.jfree/jfreechart
+    compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
+
+
+
 
 }

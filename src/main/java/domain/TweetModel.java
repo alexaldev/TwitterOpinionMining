@@ -100,6 +100,19 @@ public class TweetModel {
 
     }
 
+    public TweetModel copy(){
+
+        TweetModel other = new TweetModel();
+        other.tweetID = this.tweetID;
+        other.userID = this.userID;
+        other.tweetText = this.tweetText;
+        other.label = this.label;
+        other.positiveProbability = this.positiveProbability;
+        other.negativeProbability = this.negativeProbability;
+        other.neutralProbability = this.neutralProbability;
+        return other;
+    }
+
     public long getTweetID() {
         return tweetID;
     }
@@ -162,6 +175,8 @@ public class TweetModel {
                 tweetID +
                 "\n Tweet: " +
                 tweetText +
-                "\n";
+                "\n" +
+                "Label: " + label + ", probability: {neg: " + negativeProbability + ", neut: " + neutralProbability +
+                ", pos: " + positiveProbability + "}";
     }
 }

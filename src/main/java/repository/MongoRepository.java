@@ -91,6 +91,18 @@ public class MongoRepository {
         return collectionName;
     }
 
+    public String getDatabaseName() {
+        return mongoDatabase.getName();
+    }
+
+    public String getHostname() {
+        return mongoClient.getConnectPoint().split(":")[0];
+    }
+
+    public int getPort() {
+        return Integer.parseInt(mongoClient.getConnectPoint().split(":")[1]);
+    }
+
     public FindIterable<TweetModel> getCollectionIterable(){
         return this.collection.find();
     }

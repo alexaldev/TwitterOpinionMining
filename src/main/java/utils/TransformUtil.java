@@ -14,11 +14,14 @@ public class TransformUtil {
     private TransformUtil(){}
 
     public static List<String> tokenizeToList(String s){
-        return Arrays.asList(s.split("\\s+"));
+        return Arrays.asList(s.trim().split("\\s+"));
     }
 
     public static String onlyAlphabetic(String s){
-        return s.replaceAll("[^A-Za-z]+", " ");
+
+        //s = s.replaceAll("['’]\\S*", " ");
+
+        return s.replaceAll("[^A-Za-z\\s]+", "");
     }
 
     public static String clearLinks(String s) {
