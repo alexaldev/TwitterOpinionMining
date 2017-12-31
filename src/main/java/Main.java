@@ -81,6 +81,7 @@ public class Main {
                 SentimentAnalysis sa = new SentimentAnalysis(MongoRepository.newInstance(transformArgs.getHashtag()));
                 sa.analyze();
                 sa.printFrequents(50);
+                sa.printSentiment();
                 break;
         }
 

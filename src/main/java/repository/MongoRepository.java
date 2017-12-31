@@ -11,6 +11,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -116,6 +117,10 @@ public class MongoRepository {
         this.collection = null;
     }
 
+    /**
+     * Adds a tweet to mongo collection
+     * @throws MaxCountReachedException when max number of items for this collection has been reached
+     */
     public void addItem(TweetModel tweet) throws MaxCountReachedException{
 
         if (this.currentEntriesInCollection < maxCollectionCount){
@@ -127,6 +132,13 @@ public class MongoRepository {
             throw new MaxCountReachedException(collectionName);
         }
 
+    }
+
+    /**
+     * Updates a tweet based on tweetID
+     */
+    public void updateItem(TweetModel tweet) {
+        collection.replaceOne(eq("tweetID", tweet.getTweetID()), tweet);
     }
 
     public List<TweetModel> query(MongoQuery query){

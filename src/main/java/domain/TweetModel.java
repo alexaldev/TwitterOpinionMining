@@ -16,6 +16,8 @@ public class TweetModel {
 
         private String tweetText;
 
+        private String transformedTweetText;
+
         //Not sure if needed
         private String label;
 
@@ -37,6 +39,11 @@ public class TweetModel {
 
         public Builder setTweetText(String tweetText){
             this.tweetText = tweetText;
+            return this;
+        }
+
+        public Builder setTransformedTweetText(String transformedTweetText){
+            this.transformedTweetText = transformedTweetText;
             return this;
         }
 
@@ -73,6 +80,8 @@ public class TweetModel {
 
     private String tweetText;
 
+    private String transformedTweetText;
+
     //TODO Possible setters for these fields too, will see
 
     private String label;
@@ -93,6 +102,7 @@ public class TweetModel {
         this.tweetID = builder.tweetID;
         this.userID = builder.userID;
         this.tweetText = builder.tweetText;
+        this.transformedTweetText = builder.transformedTweetText;
         this.label = builder.label;
         this.positiveProbability = builder.positiveProbability;
         this.negativeProbability = builder.negativeProbability;
@@ -106,11 +116,18 @@ public class TweetModel {
         other.tweetID = this.tweetID;
         other.userID = this.userID;
         other.tweetText = this.tweetText;
+        other.transformedTweetText = this.transformedTweetText;
         other.label = this.label;
         other.positiveProbability = this.positiveProbability;
         other.negativeProbability = this.negativeProbability;
         other.neutralProbability = this.neutralProbability;
         return other;
+    }
+
+    public TweetModel copy(String tweetText) {
+        TweetModel newTweet = this.copy();
+        newTweet.setTweetText(tweetText);
+        return newTweet;
     }
 
     public long getTweetID() {
@@ -123,6 +140,10 @@ public class TweetModel {
 
     public String getTweetText() {
         return tweetText;
+    }
+
+    public String getTransformedTweetText() {
+        return transformedTweetText;
     }
 
     public double getNegativeProbability() {
@@ -151,6 +172,10 @@ public class TweetModel {
 
     public void setTweetText(String tweetText) {
         this.tweetText = tweetText;
+    }
+
+    public void setTransformedTweetText(String transformedTweetText) {
+        this.transformedTweetText = transformedTweetText;
     }
 
     public void setLabel(String label) {

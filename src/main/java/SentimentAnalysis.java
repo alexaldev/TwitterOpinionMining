@@ -6,25 +6,26 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 import org.json.JSONObject;
-import repository.MaxCountReachedException;
 import repository.MongoRepository;
 import utils.TransformUtil;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class SentimentAnalysis {
 
+    /**
+     * URL of sentiment analysis web api
+     */
     private static final String SENTIMENT_URL = "http://text-processing.com/api/sentiment/";
-    private static final String CHARSET = StandardCharsets.UTF_8.name();
-    private static final String NEW_COLLECTION_NAME_SUFFIX = "_test";
+
+    /**
+     * width and height of charts which are produced by this class
+     */
     private static final int CHART_WIDTH = 640;
     private static final int CHART_HEIGHT = 480;
 
@@ -36,7 +37,9 @@ public class SentimentAnalysis {
                     "that", "the", "their", "then", "there", "these",
                     "they", "this", "to", "was", "will", "with"));*/
 
-    // Taken from NLTK library
+    /**
+     * Stop words list, taken from NLTK library
+     */
     private static final HashSet<String> STOP_WORDS = new HashSet<>(
             Arrays.asList("i","me","my","myself","we","our","ours","ourselves","you",
                     "your","yours","yourself","yourselves","he","him","his","himself",
@@ -52,151 +55,207 @@ public class SentimentAnalysis {
                     "such","no","nor","not","only","own","same","so","than","too","very","s",
                     "t","can","will","just","don","should","now"));
 
+    /**
+     * MongoReository that will be work on
+     */
     private MongoRepository repo;
+
+    /**
+     * Map that counts words appearances in repo's tweets
+     */
     private Map<String, Integer> frequents;
+
+    /**
+     * Map that counts sentiment probabilities in repo's tweets
+     */
     private Map<String, Double> sentimentProbabilities;
+
 
     public SentimentAnalysis(MongoRepository repo) {
         this.repo = repo;
         this.frequents = new HashMap<>();
         this.sentimentProbabilities = new HashMap<>();
-
-
     }
 
+    /**
+     * Returns true if s belongs to stop words list
+     */
     private static boolean isStopWord(String s) {
         return STOP_WORDS.contains(s);
     }
 
+    /**
+     * Applies bellow transformations in tweetText
+     * - Clear links
+     * - Clear collection keyword
+     * - Clear non-alphabetic characters
+     * - Convert all letters to lower case
+     */
+    private String transformTweet(String tweetText) {
+        //Remove any links
+        tweetText = TransformUtil.clearLinks(tweetText);
+
+        //Remove collection name (hashtag) from tweet
+        tweetText = TransformUtil.removeCollectionKeyword(tweetText, repo.getCollectionName());
+
+        //First remove all the non-alphabetic symbols. Better as a first step
+        tweetText = TransformUtil.onlyAlphabetic(tweetText);
+
+        //Normalize the text (toLowerCase)
+        tweetText = TransformUtil.normalize(tweetText);
+
+        return tweetText;
+    }
+
+    /**
+     * Removes all stop words from tweetText
+     */
+    private String removeStopWords(String tweetText) {
+
+        // Tokenize tweet text
+        List<String> tokenizedTweet = TransformUtil.tokenizeToList(tweetText);
+
+        // Remove stopwords
+        List<String> tweetWithoutStopWords = new ArrayList<>();
+        for (String word: tokenizedTweet)
+            if ( !isStopWord(word) )
+                tweetWithoutStopWords.add(word);
+
+        //Create the updated tweet
+        StringBuilder temp = new StringBuilder();
+        for (String word : tweetWithoutStopWords)
+            temp.append(word).append(" ");
+
+        return temp.toString();
+    }
+
+    /**
+     * Queries chosen web api for tweet's text sentiment analysis and updates tweet's sentiment label and probabilities
+     *
+     * @throws TextProcessingDailyLimitException when web api return http code 503, which means that daily limit has been reached
+     */
+    private void sentimentAnalyze(TweetModel tweet) throws IOException, TextProcessingDailyLimitException {
+
+        // Setting basic post request
+        HttpURLConnection con = (HttpURLConnection) new URL(SENTIMENT_URL).openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes("text=" + tweet.getTransformedTweetText());
+        wr.flush();
+        wr.close();
+
+        // Check response code
+        int responseCode = con.getResponseCode();
+        if (responseCode == 400) {
+            System.err.println("400 Bad request response received from text-processing.com for tweet: " +
+                    tweet.getTweetText() + ". One of two following conditions has been met:" +
+                    "\n- no value for text is provided" +
+                    "\n- text exceeds 80,000 characters");
+        } else if (responseCode == 503) {
+            throw new TextProcessingDailyLimitException();
+        }
+
+        // Get response text-json
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String output;
+        StringBuilder b = new StringBuilder();
+        while ((output = in.readLine()) != null) {
+            b.append(output);
+        }
+        in.close();
+
+        // parse response json
+        JSONObject json = new JSONObject(b.toString());
+        JSONObject probability = json.getJSONObject("probability");
+
+        //Update the tweet model
+        tweet.setLabel(json.getString("label"));
+        tweet.setNegativeProbability(probability.getDouble("neg"));
+        tweet.setNeutralProbability(probability.getDouble("neutral"));
+        tweet.setPositiveProbability(probability.getDouble("pos"));
+    }
+
+    /**
+     * Adds tweet's sentiment probabilities to {@link #sentimentProbabilities}
+     */
+    private void collectSentimentProbabilities(TweetModel tweet) {
+        //Update probabilities map
+        sentimentProbabilities.merge("negative", tweet.getNegativeProbability(), Double::sum);
+        sentimentProbabilities.merge("neutral", tweet.getNeutralProbability(), Double::sum);
+        sentimentProbabilities.merge("positive", tweet.getPositiveProbability(), Double::sum);
+    }
+
+    /**
+     * Calls the {@link #transformTweet(String)} method and then adds words appearances
+     * in transformed tweet text to {@link #frequents}
+     */
+    private String transformTweetAndCollectFrequents(String tweetText) {
+
+        String transformedTweet = transformTweet(tweetText);
+
+        // Count words in tweet
+        for (String word : TransformUtil.tokenizeToList(transformedTweet))
+            frequents.merge(word, 1, Integer::sum);
+
+        return transformedTweet;
+    }
+
+    /**
+     * Does a generic analysis in repo. It transforms tweet text, collects words appearances, removes stop words,
+     * does sentiment analysis and collects sentiment probabilities in each tweet in repo.
+     */
     public void analyze() {
 
-        MongoRepository newRepo = MongoRepository.newInstance(repo.getCollectionName()+NEW_COLLECTION_NAME_SUFFIX,
-                repo.getDatabaseName(), repo.getHostname(), repo.getPort());
-
         Block<TweetModel> analysisBlock = (TweetModel tweetModel) -> {
-            String tweetText = tweetModel.getTweetText();
 
-            //DEBUG
-            //System.out.println("Original tweet:\n" + tweetText);
+            // Transform tweet and collect word appearances
+            String transformedTweetText = transformTweetAndCollectFrequents(tweetModel.getTweetText());
 
-            //Remove any links
-            tweetText = TransformUtil.clearLinks(tweetText);
+            // Remove stop words from tweet
+            transformedTweetText = removeStopWords(transformedTweetText);
 
-            //Remove collection name (hashtag) from tweet
-            tweetText = TransformUtil.removeCollectionKeyword(tweetText, repo.getCollectionName());
-
-            //First remove all the non-alphabetic symbols. Better as a first step
-            tweetText = TransformUtil.onlyAlphabetic(tweetText);
-
-            //Normalize the text (toLowerCase)
-            tweetText = TransformUtil.normalize(tweetText);
-
-            // Tokenize tweet text
-            List<String> tokenizedTweet = TransformUtil.tokenizeToList(tweetText);
-
-            // Count words in tweet
-            for (String word : tokenizedTweet)
-                frequents.merge(word, 1, Integer::sum);
-
-            // Remove stopwords
-            List<String> tweetWithoutStopWords = new ArrayList<>();
-            for (String word: tokenizedTweet)
-                if ( !isStopWord(word) )
-                    tweetWithoutStopWords.add(word);
-
-            //Create the updated tweet
-            StringBuilder temp = new StringBuilder();
-            for (String word : tweetWithoutStopWords)
-                temp.append(word).append(" ");
-            tweetText = temp.toString();
-
-            //DEBUG
-            //System.out.println("Transformed tweet:\n" + tweetText);
+            tweetModel.setTransformedTweetText(transformedTweetText);
 
             // Query text-processing.com for sentiment analysis
             try {
-                HttpURLConnection con = (HttpURLConnection) new URL(SENTIMENT_URL).openConnection();
+                // Sentiment Analysis on tweet and store probabilities in this tweet model
+                sentimentAnalyze(tweetModel);
 
-                // Setting basic post request
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Content-Type", "application/json");
+                // Take sentiment probabilities from this tweet model and add them to sum
+                collectSentimentProbabilities(tweetModel);
 
-                // Send post request
-                con.setDoOutput(true);
-                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-                wr.writeBytes("text=" + tweetText);
-                wr.flush();
-                wr.close();
-
-                // Check response code
-                int responseCode = con.getResponseCode();
-                //DEBUG
-                //System.out.println("Response Code : " + responseCode);
-                if (responseCode == 400) {
-                    System.err.println("400 Bad request response received from text-processing.com" +
-                            ". One of two following conditions has been met:" +
-                            "\n- no value for text is provided" +
-                            "\n- text exceeds 80,000 characters");
-                } else if (responseCode == 503) {
-                    throw new TextProcessingDailyLimitException();
-                }
-
-                // Get response text-json
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String output;
-                StringBuilder b = new StringBuilder();
-                while ((output = in.readLine()) != null) {
-                    b.append(output);
-                }
-                in.close();
-
-                // parse response json
-                JSONObject json = new JSONObject(b.toString());
-                JSONObject probability = json.getJSONObject("probability");
-                String label = json.getString("label");
-                Double negProb = probability.getDouble("neg");
-                Double neutProb = probability.getDouble("neutral");
-                Double posProb = probability.getDouble("pos");
-
-                //Update probabilities map
-                sentimentProbabilities.merge("negative", negProb, Double::sum);
-                sentimentProbabilities.merge("neutral", neutProb, Double::sum);
-                sentimentProbabilities.merge("positive", posProb, Double::sum);
-
-                //Update the tweet model
-                TweetModel newTweetModel = tweetModel.copy();
-                newTweetModel.setTweetText(temp.toString());
-                newTweetModel.setLabel(label);
-                newTweetModel.setNegativeProbability(negProb);
-                newTweetModel.setNeutralProbability(neutProb);
-                newTweetModel.setPositiveProbability(posProb);
-
-                //add tweet model to collection
-                //newRepo.addItem(newTweetModel);
-
-                //DEBUG
-                //System.out.println(newTweetModel);
+                // Update tweet model in collection
+                repo.updateItem(tweetModel);
 
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (TextProcessingDailyLimitException e) {
                 e.printStackTrace();
-            //} catch (MaxCountReachedException e) {
-              //  e.printStackTrace();
             }
-
         };
 
-        repo.getCollectionIterable().forEach(analysisBlock);
+        repo.getCollectionIterable().limit(5).forEach(analysisBlock);
 
     }
 
+    /**
+     * Prints to screen top N frequent words in repo with and without stop words and produces following charts:
+     * - All words count line chart
+     * - Top N frequent words included stop words bar chart
+     * - Top N frequent words without stop words bar chart
+     */
     public void printFrequents(int n) {
 
         // Check if analysis has been made or not
         if (frequents.isEmpty()) {
-            System.err.println("A call to analyze must be preceded before a call to printFrequents");
-            return;
+            System.err.println("A call to analyze has not been made. Word count for repo will start now...");
+            repo.getCollectionIterable().forEach( (Block<TweetModel>) (TweetModel tweet) ->
+                    transformTweetAndCollectFrequents(tweet.getTweetText()));
+            System.err.println("Word counting finished.");
         }
 
         // sort frequents map
@@ -211,13 +270,15 @@ public class SentimentAnalysis {
                         LinkedHashMap::new
                 ));
 
+        // JFreeCharts datasets for e charts: all words line chart, top n words included stop words bar chart,
+        // top n words without stop words bar chart
         DefaultCategoryDataset allWordsDataset = new DefaultCategoryDataset();
         sortedFrequents.forEach( (String key, Integer val) -> allWordsDataset.addValue(val, "words", key));
 
         DefaultCategoryDataset topNWithStopwordsDataset = new DefaultCategoryDataset();
         DefaultCategoryDataset topNWithoutStopwordsDataset = new DefaultCategoryDataset();
 
-
+        // Fill in topN words datasets and print to screen word counts
         System.out.println("Top " + n + " words included stopwords:");
         int k = n;
         for (Map.Entry<String, Integer> e : sortedFrequents.entrySet()) {
@@ -227,7 +288,6 @@ public class SentimentAnalysis {
             topNWithStopwordsDataset.addValue(e.getValue(), e.getKey(), "word");
             k--;
         }
-
         System.out.println("\nTop " + n + " words without stopwords:");
         k = n;
         for (Map.Entry<String, Integer> e : sortedFrequents.entrySet()) {
@@ -240,6 +300,7 @@ public class SentimentAnalysis {
             }
         }
 
+        // Create the charts
         JFreeChart lineChartAllWords = ChartFactory.createLineChart("All words count",
                 "", "count", allWordsDataset,
                 PlotOrientation.VERTICAL, false, false, false );
@@ -248,6 +309,7 @@ public class SentimentAnalysis {
         JFreeChart barChartWithoutStopwords = ChartFactory.createBarChart("Top " + n + " words without stopwords",
                 "", "count", topNWithoutStopwordsDataset);
 
+        // Save charts as png files
         try {
             ChartUtils.saveChartAsPNG(new File(lineChartAllWords.getTitle().getText().replace(" ", "_") + ".png"),
                     lineChartAllWords, CHART_WIDTH, CHART_HEIGHT);
@@ -263,19 +325,26 @@ public class SentimentAnalysis {
 
     }
 
+    /**
+     * Produces a pie chart for sentiment probabilities in repo's tweets
+     */
     public void printSentiment() {
 
         // Check if analysis has been made or not
         if (sentimentProbabilities.isEmpty()) {
-            System.err.println("A call to analyze must be preceded before a call to printFrequents");
-            return;
+            System.err.println("A call to analyze has not been made. Start collecting now...");
+            repo.getCollectionIterable().forEach( (Block<TweetModel>) this::collectSentimentProbabilities);
+            System.err.println("Sentiment probabilities collection finished.");
         }
 
+        // Create and fill chart dataset
         DefaultPieDataset dataset = new DefaultPieDataset();
         sentimentProbabilities.forEach(dataset::setValue);
 
+        // Create chart
         JFreeChart pieChart = ChartFactory.createPieChart("Sentiment Pie Chart", dataset);
 
+        // Save chart as png files
         try {
             ChartUtils.saveChartAsPNG(new File(pieChart.getTitle().getText().replace(" ", "_") + ".png"),
                     pieChart, CHART_WIDTH, CHART_HEIGHT);
