@@ -108,6 +108,10 @@ public class MongoRepository {
         return this.collection.find();
     }
 
+    public long getCollectionCount() {
+        return collection.count();
+    }
+
     /**
      * Just cleanup things, no necessary still
      */

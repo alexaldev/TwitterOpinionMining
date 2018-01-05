@@ -1,0 +1,110 @@
+Current entries count: 1500
+Analysing...23%Tweet "This. This. This. 
+https://t.co/nozx1EJjHX" does not have any text left after transformation.
+Analysing...100%Top 50 words included stopwords:
+ 1. the                 721
+ 2. to                  491
+ 3. a                   366
+ 4. of                  325
+ 5. in                  317
+ 6. is                  306
+ 7. and                 268
+ 8. this                219
+ 9. you                 202
+10. for                 155
+11. i                   148
+12. nyc                 145
+13. that                145
+14. it                  137
+15. on                  113
+16. we                  113
+17. are                 112
+18. attack              109
+19. all                 109
+20. was                 108
+21. he                  103
+22. be                  102
+23. not                  94
+24. they                 91
+25. at                   88
+26. portauthority        84
+27. what                 81
+28. us                   81
+29. new                  75
+30. from                 72
+31. have                 71
+32. no                   71
+33. muslims              71
+34. terrorist            71
+35. as                   70
+36. bombing              69
+37. about                67
+38. an                   67
+39. with                 65
+40. if                   64
+41. so                   64
+42. people               64
+43. will                 62
+44. its                  62
+45. your                 61
+46. his                  60
+47. by                   58
+48. like                 57
+49. who                  54
+50. up                   54
+
+Top 50 words without stopwords:
+ 1. nyc                 145
+ 2. attack              109
+ 3. portauthority        84
+ 4. us                   81
+ 5. new                  75
+ 6. muslims              71
+ 7. terrorist            71
+ 8. bombing              69
+ 9. people               64
+10. like                 57
+11. bomb                 54
+12. terror               52
+13. dont                 51
+14. suspect              51
+15. york                 48
+16. latest               47
+17. bomber               45
+18. one                  45
+19. get                  44
+20. today                44
+21. rt                   42
+22. muslim               41
+23. timessquare          41
+24. news                 40
+25. know                 40
+26. backlash             40
+27. city                 40
+28. go                   39
+29. explosion            38
+30. ullah                38
+31. thanks               38
+32. isis                 37
+33. would                36
+34. subway               36
+35. port                 36
+36. akayed               36
+37. want                 35
+38. akayedullah          34
+39. need                 34
+40. authority            34
+41. america              33
+42. trump                33
+43. realdonaldtrump      32
+44. bus                  32
+45. pipe                 30
+46. christmas            30
+47. something            30
+48. another              29
+49. thank                28
+50. islam                28
+
+Charts saved.
+
+Pie Chart saved in local directory.

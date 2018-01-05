@@ -13,7 +13,9 @@ import utils.TransformUtil;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class SentimentAnalysis {
@@ -136,6 +138,16 @@ public class SentimentAnalysis {
      */
     private void sentimentAnalyze(TweetModel tweet) throws IOException, TextProcessingDailyLimitException {
 
+        // Check conditions
+        if (tweet.getTransformedTweetText().equals("")) {
+            System.err.println("Tweet \"" + tweet.getTweetText() + "\" does not have any text left after transformation.");
+            return;
+        }
+
+        // should I stay or should I go?
+        if (tweet.getLabel() != null)
+            return;
+
         // Setting basic post request
         HttpURLConnection con = (HttpURLConnection) new URL(SENTIMENT_URL).openConnection();
         con.setRequestMethod("POST");
@@ -151,8 +163,9 @@ public class SentimentAnalysis {
         // Check response code
         int responseCode = con.getResponseCode();
         if (responseCode == 400) {
-            System.err.println("400 Bad request response received from text-processing.com for tweet: " +
-                    tweet.getTweetText() + ". One of two following conditions has been met:" +
+            System.err.println("400 Bad request response received from text-processing.com for tweet:\n " +
+                    tweet.getTweetText() +  "\n with transformed text:\n" +
+                    tweet.getTransformedTweetText() + "\nOne of two following conditions has been met:" +
                     "\n- no value for text is provided" +
                     "\n- text exceeds 80,000 characters");
         } else if (responseCode == 503) {
@@ -210,7 +223,14 @@ public class SentimentAnalysis {
      */
     public void analyze() {
 
+        final long totalCount = repo.getCollectionCount();
+        final AtomicLong currCount = new AtomicLong(0L);
+
         Block<TweetModel> analysisBlock = (TweetModel tweetModel) -> {
+
+            if (currCount.incrementAndGet() % 50 == 0) {
+                System.out.printf("\rAnalysing...%d%%", currCount.get()*100/totalCount);
+            }
 
             // Transform tweet and collect word appearances
             String transformedTweetText = transformTweetAndCollectFrequents(tweetModel.getTweetText());
@@ -238,7 +258,7 @@ public class SentimentAnalysis {
             }
         };
 
-        repo.getCollectionIterable().limit(5).forEach(analysisBlock);
+        repo.getCollectionIterable().forEach(analysisBlock);
 
     }
 
@@ -248,7 +268,7 @@ public class SentimentAnalysis {
      * - Top N frequent words included stop words bar chart
      * - Top N frequent words without stop words bar chart
      */
-    public void printFrequents(int n) {
+    public void printFrequents(int n, String chartsDirectory) {
 
         // Check if analysis has been made or not
         if (frequents.isEmpty()) {
@@ -311,14 +331,14 @@ public class SentimentAnalysis {
 
         // Save charts as png files
         try {
-            ChartUtils.saveChartAsPNG(new File(lineChartAllWords.getTitle().getText().replace(" ", "_") + ".png"),
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, lineChartAllWords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     lineChartAllWords, CHART_WIDTH, CHART_HEIGHT);
-            ChartUtils.saveChartAsPNG(new File(barChartWithStopwords.getTitle().getText().replace(" ", "_") + ".png"),
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, barChartWithStopwords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     barChartWithStopwords, CHART_WIDTH, CHART_HEIGHT);
-            ChartUtils.saveChartAsPNG(new File(barChartWithoutStopwords.getTitle().getText().replace(" ", "_") + ".png"),
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, barChartWithoutStopwords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     barChartWithoutStopwords, CHART_WIDTH, CHART_HEIGHT);
 
-            System.out.println("\nCharts saved in local directory.");
+            System.out.println("\nCharts saved.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -328,7 +348,7 @@ public class SentimentAnalysis {
     /**
      * Produces a pie chart for sentiment probabilities in repo's tweets
      */
-    public void printSentiment() {
+    public void printSentiment(String chartsDirectory) {
 
         // Check if analysis has been made or not
         if (sentimentProbabilities.isEmpty()) {
@@ -346,7 +366,7 @@ public class SentimentAnalysis {
 
         // Save chart as png files
         try {
-            ChartUtils.saveChartAsPNG(new File(pieChart.getTitle().getText().replace(" ", "_") + ".png"),
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, pieChart.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     pieChart, CHART_WIDTH, CHART_HEIGHT);
             System.out.println("\nPie Chart saved in local directory.");
         } catch (IOException e) {

@@ -1,7 +1,8 @@
 import args.*;
 import com.beust.jcommander.JCommander;
-import domain.TweetModel;
 import repository.MongoRepository;
+
+import java.nio.file.Paths;
 
 /**
  * CLASS DESCRIPTION HERE
@@ -25,13 +26,13 @@ public class Main {
 
         CollectArgs collectArgs = new CollectArgs();
         PrintCollectionArgs printArgs = new PrintCollectionArgs();
-        TransformArgs transformArgs = new TransformArgs();
+        TweetSentimentAnalysis tweetSentimentAnalysis = new TweetSentimentAnalysis();
 
         JCommander jc = JCommander.newBuilder()
                 .addObject(mainArgs)
                 .addCommand("collect", collectArgs)
                 .addCommand("print-collection", printArgs)
-                .addCommand("transform", transformArgs)
+                .addCommand("tweet-analyze", tweetSentimentAnalysis)
                 .build();
 
         jc.setProgramName(PROGRAM_NAME);
@@ -66,7 +67,7 @@ public class Main {
                         .printCollection(printArgs.isShort());
 
                 break;
-            case "transform":
+            case "tweet-analyze":
 /*
                 TweetModel tweetModel = new TweetModel.Builder()
                         .setTweetID(102)
@@ -78,10 +79,10 @@ public class Main {
 
                 System.out.println(tweetModel.getTweetText());
 */
-                SentimentAnalysis sa = new SentimentAnalysis(MongoRepository.newInstance(transformArgs.getHashtag()));
+                SentimentAnalysis sa = new SentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysis.getHashtag()));
                 sa.analyze();
-                sa.printFrequents(50);
-                sa.printSentiment();
+                sa.printFrequents(50, tweetSentimentAnalysis.getChartsDirectory());
+                sa.printSentiment(tweetSentimentAnalysis.getChartsDirectory());
                 break;
         }
 
