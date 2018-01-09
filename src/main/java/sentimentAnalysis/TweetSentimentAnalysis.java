@@ -1,3 +1,5 @@
+package sentimentAnalysis;
+
 import com.mongodb.Block;
 import domain.TweetModel;
 import org.jfree.chart.ChartFactory;
@@ -19,7 +21,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-public class SentimentAnalysis {
+public class TweetSentimentAnalysis extends SentimentAnalysis {
 
     /**
      * URL of sentiment analysis web api
@@ -59,11 +61,6 @@ public class SentimentAnalysis {
                     "t","can","will","just","don","should","now"));
 
     /**
-     * MongoReository that will be work on
-     */
-    private MongoRepository repo;
-
-    /**
      * Map that counts words appearances in repo's tweets
      */
     private Map<String, Integer> frequents;
@@ -74,8 +71,8 @@ public class SentimentAnalysis {
     private Map<String, Double> sentimentProbabilities;
 
 
-    public SentimentAnalysis(MongoRepository repo) {
-        this.repo = repo;
+    public TweetSentimentAnalysis(MongoRepository repo) {
+        super(repo);
         this.frequents = new HashMap<>();
         this.sentimentProbabilities = new HashMap<>();
     }

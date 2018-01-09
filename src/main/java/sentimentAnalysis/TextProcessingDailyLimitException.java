@@ -1,3 +1,5 @@
+package sentimentAnalysis;
+
 public class TextProcessingDailyLimitException extends Exception {
 
     public TextProcessingDailyLimitException() {

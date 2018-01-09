@@ -1,8 +1,9 @@
 import args.*;
 import com.beust.jcommander.JCommander;
 import repository.MongoRepository;
-
-import java.nio.file.Paths;
+import sentimentAnalysis.TweetSentimentAnalysis;
+import sentimentAnalysis.UserSentimentAnalysis;
+import twitter4j.TwitterException;
 
 /**
  * CLASS DESCRIPTION HERE
@@ -26,13 +27,14 @@ public class Main {
 
         CollectArgs collectArgs = new CollectArgs();
         PrintCollectionArgs printArgs = new PrintCollectionArgs();
-        TweetSentimentAnalysis tweetSentimentAnalysis = new TweetSentimentAnalysis();
+        TweetSentimentAnalysisArgs tweetSentimentAnalysisArgs = new TweetSentimentAnalysisArgs();
 
         JCommander jc = JCommander.newBuilder()
                 .addObject(mainArgs)
                 .addCommand("collect", collectArgs)
                 .addCommand("print-collection", printArgs)
-                .addCommand("tweet-analyze", tweetSentimentAnalysis)
+                .addCommand("tweet-analyze", tweetSentimentAnalysisArgs)
+                .addCommand("user-analyze", tweetSentimentAnalysisArgs)
                 .build();
 
         jc.setProgramName(PROGRAM_NAME);
@@ -79,10 +81,20 @@ public class Main {
 
                 System.out.println(tweetModel.getTweetText());
 */
-                SentimentAnalysis sa = new SentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysis.getHashtag()));
+                TweetSentimentAnalysis sa = new TweetSentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysisArgs.getHashtag()));
                 sa.analyze();
-                sa.printFrequents(50, tweetSentimentAnalysis.getChartsDirectory());
-                sa.printSentiment(tweetSentimentAnalysis.getChartsDirectory());
+                sa.printFrequents(50, tweetSentimentAnalysisArgs.getChartsDirectory());
+                sa.printSentiment(tweetSentimentAnalysisArgs.getChartsDirectory());
+                break;
+            case "user-analyze":
+                UserSentimentAnalysis us = new UserSentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysisArgs.getHashtag()));/*
+                try {
+                    double d = us.calculateFollowersFriendsRatio(33331626);
+                    System.out.println("d = " + d);
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                }*/
+                us.produceCumulativeDistributionFrequency();
                 break;
         }
 

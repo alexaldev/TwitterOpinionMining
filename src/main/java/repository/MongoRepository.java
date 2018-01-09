@@ -2,12 +2,12 @@ package repository;
 
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import domain.TweetModel;
+import org.bson.BsonInt64;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 
 import java.util.List;
 
@@ -106,6 +106,14 @@ public class MongoRepository {
 
     public FindIterable<TweetModel> getCollectionIterable(){
         return this.collection.find();
+    }
+
+    public AggregateIterable<TweetModel> collectionAggregate(List<Bson> aggregates) {
+        return collection.aggregate(aggregates);
+    }
+
+    public <T> DistinctIterable<T> distinctCollection(String fieldname, Class<T> type) {
+        return collection.distinct(fieldname, type);
     }
 
     public long getCollectionCount() {
