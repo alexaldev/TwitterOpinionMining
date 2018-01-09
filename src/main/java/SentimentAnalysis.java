@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.xy.DefaultXYDataset;
 import org.json.JSONObject;
 import repository.MongoRepository;
 import utils.TransformUtil;
@@ -295,6 +296,21 @@ public class SentimentAnalysis {
         DefaultCategoryDataset allWordsDataset = new DefaultCategoryDataset();
         sortedFrequents.forEach( (String key, Integer val) -> allWordsDataset.addValue(val, "words", key));
 
+        DefaultXYDataset allWordsDatasetXY = new DefaultXYDataset();
+
+        ArrayList<Double> valuesList = new ArrayList<>();
+        sortedFrequents.values().forEach(i -> valuesList.add(Math.log10(i)));
+        double[] values = new double[valuesList.size()];
+        double[] indices = new double[valuesList.size()];
+        for (int i=0; i< valuesList.size(); i++) {
+            values[i] = valuesList.get(i);
+            indices[i] = Math.log10(i);
+        }
+        indices[0] = 0;
+
+        allWordsDatasetXY.addSeries("words", new double[][] {indices, values});
+
+
         DefaultCategoryDataset topNWithStopwordsDataset = new DefaultCategoryDataset();
         DefaultCategoryDataset topNWithoutStopwordsDataset = new DefaultCategoryDataset();
 
@@ -324,6 +340,8 @@ public class SentimentAnalysis {
         JFreeChart lineChartAllWords = ChartFactory.createLineChart("All words count",
                 "", "count", allWordsDataset,
                 PlotOrientation.VERTICAL, false, false, false );
+        JFreeChart plotChartAllWords = ChartFactory.createXYLineChart("All words Zipf diagram",
+                "word rank (log10)", "word frequencylog(10)", allWordsDatasetXY);
         JFreeChart barChartWithStopwords = ChartFactory.createBarChart("Top " + n + " words included stopwords",
                 "", "count", topNWithStopwordsDataset);
         JFreeChart barChartWithoutStopwords = ChartFactory.createBarChart("Top " + n + " words without stopwords",
@@ -333,6 +351,10 @@ public class SentimentAnalysis {
         try {
             ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, lineChartAllWords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     lineChartAllWords, CHART_WIDTH, CHART_HEIGHT);
+
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, plotChartAllWords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
+                    plotChartAllWords, CHART_WIDTH, CHART_HEIGHT);
+
             ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, barChartWithStopwords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     barChartWithStopwords, CHART_WIDTH, CHART_HEIGHT);
             ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, barChartWithoutStopwords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
