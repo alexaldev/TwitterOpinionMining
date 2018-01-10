@@ -1,35 +1,43 @@
 package sentimentAnalysis;
 
 import com.mongodb.Block;
+import com.mongodb.MongoClient;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import domain.TweetModel;
 import org.bson.BsonInt64;
 import org.bson.Document;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.DefaultXYDataset;
 import repository.MongoRepository;
-import twitter.Constants;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
 
-import java.util.*;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class UserSentimentAnalysis extends SentimentAnalysis {
 
-    private Twitter twitter;
-
     public UserSentimentAnalysis(MongoRepository repo) {
         super(repo);
-        twitter = TwitterFactory.getSingleton();
-        twitter.setOAuthConsumer(Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET);
-        twitter.setOAuthAccessToken(new AccessToken(Constants.ACCESS_TOKEN, Constants.ACCESS_SECRET));
     }
 
+    /**
+     * Calculates average sentiment scores for each user in collection
+     * @return iterable with users
+     */
     public AggregateIterable<TweetModel> calculateTotalUsersSentimentScore() {
         return repo.collectionAggregate(Arrays.asList(
                 // Aggregation: GROUPBY userID, AVG(pos, neg, neut)
@@ -46,32 +54,86 @@ public class UserSentimentAnalysis extends SentimentAnalysis {
         );
     }
 
+    /**
+     * Creates a collection with name as repo's collection name with suffix '_usersFeelings', in which it stores user
+     * sentiment scores as they are calculated from {@link #calculateTotalUsersSentimentScore()}
+     */
+    public void storeUsersSentimentScore() {
+        AggregateIterable<TweetModel> usersScore = calculateTotalUsersSentimentScore();
+
+        // put users in a list
+        List<Document> usersList = new ArrayList<>();
+        usersScore.forEach((Block<? super TweetModel>) (TweetModel tweetModel) ->
+                usersList.add(
+                        new Document("userID", tweetModel.getUserID())
+                                .append("avgPositiveProbability", tweetModel.getPositiveProbability())
+                                .append("avgNegativeProbability", tweetModel.getNegativeProbability())
+                                .append("avgNeutralProbability", tweetModel.getNeutralProbability())
+                ));
+
+        // Create new collection
+        MongoCollection<Document> collection = new MongoClient(repo.getHostname(), repo.getPort())
+                .getDatabase(repo.getDatabaseName())
+                .getCollection(repo.getCollectionName() + "_usersFeelings");
+
+        // Add users to collection. If collection already exists, ask for drop or not.
+        if (collection.count() == 0)
+            collection.insertMany(usersList);
+        else {
+            System.out.print(repo.getCollectionName() + "_usersFeelings already exists. Do you want to drop it and fill it again? (y/N): ");
+            String ans = new Scanner(System.in).nextLine();
+            if (ans.toLowerCase().equals("y")) {
+                collection.drop();
+                collection.insertMany(usersList);
+                System.out.println("Collection has been dropped and recreated");
+            } else
+                System.out.println("No changes were made in collection");
+        }
+
+    }
+
+    /**
+     * Calculates Followers-Friends ratio for each user in collection
+     * @param userID twitter user ID
+     * @return ff ratio, unless friends count equals 0, then it returns -1
+     * @throws TwitterException
+     */
     public double calculateFollowersFriendsRatio(long userID) throws TwitterException {
-        int followers = twitter.showUser(userID).getFollowersCount();
-        int friends = twitter.showUser(userID).getFriendsCount();
+
+        // get all tweets from this user
+        FindIterable<TweetModel> it = repo.getCollectionIterable(eq("userID", userID));
+
+        // keep only the first one
+        TweetModel tweetModel = it.first();
+
+        // Get counts
+        int followers = tweetModel.getUserFollowersCount();
+        int friends = tweetModel.getUserFriendsCount();
+
+        // Return ratio
+        if (friends == 0)
+            return -1;
 
         return ((double) followers) / friends;
     }
 
-    private double sumList(List<Double> l) {
-        double sum = 0;
-        for (double e : l)
-            sum += e;
-        return sum;
-    }
+    /**
+     * Produces cdf of Followers-Friends Ratio for this collection
+     * @param chartsDirectory Directory in which plot will be saved
+     */
+    public void produceCumulativeDistributionFrequency(String chartsDirectory) {
 
-    public void produceCumulativeDistributionFrequency() {
+        // Get an iterable with distinct userIDs from collection
         DistinctIterable<BsonInt64> dit = repo.distinctCollection("userID", BsonInt64.class);
 
+        // Calculate cumulative followers-friends ratio for all users
         List<Double> ffRatioCumm = new ArrayList<>();
         ffRatioCumm.add(0.0);
-
-        
-
         dit.forEach((Block<? super BsonInt64>) (BsonInt64 userID) -> {
             try {
                 double ratio = calculateFollowersFriendsRatio(userID.getValue());
-                ffRatioCumm.add(ffRatioCumm.get(ffRatioCumm.size()-1) + ratio);
+                if (ratio != -1)
+                    ffRatioCumm.add(ffRatioCumm.get(ffRatioCumm.size()-1) + ratio); // add value of previous + value of this
             } catch (TwitterException e) {
                 if (e.getStatusCode() == 403 || e.getStatusCode() == 404)
                     System.err.println("User " + userID.longValue() + " does not exist or have been removed");
@@ -79,12 +141,29 @@ public class UserSentimentAnalysis extends SentimentAnalysis {
                     e.printStackTrace();
             }
         });
-
         ffRatioCumm.remove(0);
 
+        // Create plot dataset
+        double[] values = new double[ffRatioCumm.size()];
+        double[] indices = new double[ffRatioCumm.size()];
+        for (int i=0; i< ffRatioCumm.size(); i++) {
+            values[i] = ffRatioCumm.get(i);
+            indices[i] = i+1;
+        }
+        DefaultXYDataset dataset = new DefaultXYDataset();
+        dataset.addSeries("ffRatio", new double[][] {indices, values});
 
+        // Create chart
+        JFreeChart cdf = ChartFactory.createXYLineChart("Followers-Friends Ratio CDF", "CDF", "", dataset);
 
-        System.out.println();
+        // Save chart as png files
+        try {
+            ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, cdf.getTitle().getText().replace(" ", "_") + ".png").toFile(),
+                    cdf, CHART_WIDTH, CHART_HEIGHT);
+            System.out.println("\nPie Chart saved in " + chartsDirectory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

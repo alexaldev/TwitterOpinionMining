@@ -1,125 +1,0 @@
-Jan 09, 2018 5:44:10 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-Jan 09, 2018 5:44:10 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
-Jan 09, 2018 5:44:10 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:1, serverValue:275}] to localhost:27017
-Jan 09, 2018 5:44:10 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 0]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, roundTripTimeNanos=945041}
-Jan 09, 2018 5:44:10 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:2, serverValue:276}] to localhost:27017
-Mongo Repository setup ready on collection: #TimesSquare
-Current entries count: 1500
-Analysing...3%Analysing...6%Analysing...10%Tweet "This 👇 https://t.co/3zpDFCGTkn" does not have any text left after transformation.
-Analysing...13%Analysing...16%Analysing...20%Tweet "This  👇 https://t.co/DS4TcH1KFE" does not have any text left after transformation.
-Analysing...23%Analysing...26%Analysing...30%Analysing...33%Analysing...36%Analysing...40%Analysing...43%Analysing...46%Analysing...50%Analysing...53%Analysing...56%Analysing...60%Analysing...63%Analysing...66%Tweet "🤣🤣😂😂🤣🤣
-THIS
-☟☟☟☟☟☟☟☟☟☟ https://t.co/OPV55jSGrv" does not have any text left after transformation.
-Tweet "WHAT!!! https://t.co/0DskCvpngT" does not have any text left after transformation.
-Analysing...70%Analysing...73%Analysing...76%Analysing...80%Analysing...83%Analysing...86%Analysing...90%Analysing...93%Analysing...96%Analysing...100%Top 50 words included stopwords:
- 1. the                 626
- 2. to                  411
- 3. a                   299
- 4. in                  295
- 5. is                  267
- 6. of                  263
- 7. this                243
- 8. and                 231
- 9. nyc                 172
-10. you                 169
-11. for                 163
-12. i                   131
-13. on                  125
-14. timessquare         119
-15. it                  109
-16. new                 107
-17. that                106
-18. be                  100
-19. are                  99
-20. with                 96
-21. he                   93
-22. not                  90
-23. nypd                 89
-24. they                 88
-25. all                  85
-26. was                  83
-27. we                   78
-28. what                 77
-29. pipebomb             76
-30. terrorist            71
-31. at                   70
-32. get                  67
-33. by                   64
-34. us                   64
-35. york                 63
-36. have                 62
-37. our                  61
-38. free                 61
-39. as                   59
-40. if                   59
-41. my                   59
-42. from                 59
-43. like                 58
-44. newyork              57
-45. who                  57
-46. do                   56
-47. out                  53
-48. up                   52
-49. your                 52
-50. its                  52
-
-Top 50 words without stopwords:
- 1. nyc                 172
- 2. timessquare         119
- 3. new                 107
- 4. nypd                 89
- 5. pipebomb             76
- 6. terrorist            71
- 7. get                  67
- 8. us                   64
- 9. york                 63
-10. free                 61
-11. like                 58
-12. newyork              57
-13. portauthority        51
-14. attack               49
-15. latest               48
-16. dont                 47
-17. lyft                 47
-18. need                 46
-19. muslim               45
-20. ny                   45
-21. city                 45
-22. realdonaldtrump      44
-23. news                 42
-24. trump                41
-25. obama                39
-26. bomb                 39
-27. bomber               37
-28. bombing              36
-29. terror               36
-30. one                  35
-31. rides                35
-32. would                34
-33. times                34
-34. rt                   34
-35. want                 34
-36. manhattan            34
-37. people               34
-38. country              32
-39. see                  32
-40. isis                 31
-41. know                 30
-42. suspect              30
-43. ullah                30
-44. bangladesh           30
-45. right                28
-46. love                 28
-47. ts                   28
-48. decal                28
-49. hot                  28
-50. akayed               28
-
-Charts saved.
-
-Pie Chart saved in local directory.

@@ -1,0 +1,122 @@
+Jan 09, 2018 5:50:22 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+Jan 09, 2018 5:50:22 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
+Jan 09, 2018 5:50:22 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:1, serverValue:279}] to localhost:27017
+Jan 09, 2018 5:50:22 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 0]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, roundTripTimeNanos=1019183}
+Jan 09, 2018 5:50:22 PM com.mongodb.diagnostics.logging.JULLogger log
+INFO: Opened connection [connectionId{localValue:2, serverValue:280}] to localhost:27017
+Mongo Repository setup ready on collection: #jerusalem
+Current entries count: 1500
+Analysing...3%Analysing...6%Analysing...10%Analysing...13%Analysing...16%Analysing...20%Analysing...23%Tweet "so am I https://t.co/CQ60UATO8O" does not have any text left after transformation.
+Analysing...26%Analysing...30%Analysing...33%Analysing...36%Analysing...40%Analysing...43%Analysing...46%Analysing...50%Analysing...53%Analysing...56%Analysing...60%Analysing...63%Analysing...66%Analysing...70%Tweet "It is now. https://t.co/JwkJKh707Y" does not have any text left after transformation.
+Analysing...73%Analysing...76%Tweet "all of the above https://t.co/dXVLeRuohB" does not have any text left after transformation.
+Analysing...80%Analysing...83%Analysing...86%Analysing...90%Analysing...93%Analysing...96%Analysing...100%Top 50 words included stopwords:
+ 1. the                 948
+ 2. jerusalem           846
+ 3. to                  546
+ 4. of                  453
+ 5. is                  377
+ 6. a                   356
+ 7. and                 314
+ 8. for                 272
+ 9. trump               268
+10. israel              255
+11. it                  237
+12. capital             228
+13. us                  225
+14. in                  214
+15. not                 211
+16. you                 197
+17. as                  150
+18. on                  141
+19. was                 140
+20. i                   132
+21. that                128
+22. this                128
+23. realdonaldtrump     126
+24. or                  122
+25. recognize           105
+26. palestine           104
+27. good                100
+28. he                   99
+29. be                   98
+30. take                 97
+31. will                 96
+32. trumps               96
+33. has                  86
+34. idea                 86
+35. poll                 84
+36. what                 82
+37. decision             77
+38. potus                77
+39. embassy              76
+40. are                  75
+41. president            74
+42. have                 73
+43. your                 71
+44. with                 71
+45. but                  70
+46. we                   68
+47. so                   67
+48. from                 67
+49. move                 66
+50. about                64
+
+Top 50 words without stopwords:
+ 1. jerusalem           846
+ 2. trump               268
+ 3. israel              255
+ 4. capital             228
+ 5. us                  225
+ 6. realdonaldtrump     126
+ 7. recognize           105
+ 8. palestine           104
+ 9. good                100
+10. take                 97
+11. trumps               96
+12. idea                 86
+13. poll                 84
+14. decision             77
+15. potus                77
+16. embassy              76
+17. president            74
+18. move                 66
+19. israels              59
+20. peace                55
+21. would                52
+22. rt                   51
+23. world                46
+24. god                  43
+25. livspa               43
+26. video                39
+27. dont                 37
+28. announcement         36
+29. like                 36
+30. xxx                  35
+31. always               35
+32. llsitistime          35
+33. people               33
+34. muslim               32
+35. one                  32
+36. house                31
+37. un                   30
+38. palestinians         30
+39. american             30
+40. allah                29
+41. right                29
+42. lsarsour             29
+43. think                28
+44. muslims              27
+45. time                 27
+46. today                27
+47. o                    26
+48. recognition          26
+49. moving               26
+50. metoo                26
+
+Charts saved.
+
+Pie Chart saved in local directory.

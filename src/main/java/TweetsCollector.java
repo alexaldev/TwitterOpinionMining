@@ -1,13 +1,9 @@
-import com.mongodb.client.MongoCursor;
-import domain.TweetModel;
 import domain.TweetModelParser;
 import repository.MaxCountReachedException;
 import repository.MongoRepository;
 import twitter.Constants;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-
-import java.util.Iterator;
 
 public class TweetsCollector implements StatusListener {
 
@@ -119,6 +115,7 @@ public class TweetsCollector implements StatusListener {
                 this.repository.addItem(
                         TweetModelParser.parseFrom(status)
                 );
+                System.out.printf("\rCollected %d/%d items", repository.getCollectionCount(), repository.getMaxCollectionCount());
             } catch (MaxCountReachedException e) {
                 System.out.println("Max count of collection reached: " + MAX_TWEETS_PER_COLLECTION);
                 System.out.println("Thank you for the collection, exiting...");

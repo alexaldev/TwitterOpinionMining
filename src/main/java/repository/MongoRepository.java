@@ -4,7 +4,6 @@ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.*;
 import domain.TweetModel;
-import org.bson.BsonInt64;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -32,7 +31,6 @@ public class MongoRepository {
     private String collectionName;
     private MongoCollection<TweetModel> collection;
     private long maxCollectionCount;
-    private long currentEntriesInCollection;
 
     /**
      * Factory method to create instances.
@@ -82,10 +80,9 @@ public class MongoRepository {
                 getCollection(collectionName,TweetModel.class)
                 .withCodecRegistry(pojoCodecRegistry);
 
-        this.currentEntriesInCollection = this.collection.count();
         this.maxCollectionCount = maxCollectionCount;
 
-        System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.currentEntriesInCollection);
+        System.out.println("Mongo Repository setup ready on collection: " + collectionName + "\nCurrent entries count: " + this.collection.count());
     }
 
     public String getCollectionName() {
@@ -108,6 +105,10 @@ public class MongoRepository {
         return this.collection.find();
     }
 
+    public FindIterable<TweetModel> getCollectionIterable(Bson filter){
+        return this.collection.find(filter);
+    }
+
     public AggregateIterable<TweetModel> collectionAggregate(List<Bson> aggregates) {
         return collection.aggregate(aggregates);
     }
@@ -118,6 +119,10 @@ public class MongoRepository {
 
     public long getCollectionCount() {
         return collection.count();
+    }
+
+    public long getMaxCollectionCount() {
+        return maxCollectionCount;
     }
 
     /**
@@ -135,7 +140,7 @@ public class MongoRepository {
      */
     public void addItem(TweetModel tweet) throws MaxCountReachedException{
 
-        if (this.currentEntriesInCollection < maxCollectionCount){
+        if (this.collection.count() < maxCollectionCount){
             //DEBUG
             //System.out.println("Adding tweet #" + ++currentEntriesInCollection);
             this.collection.insertOne(tweet);

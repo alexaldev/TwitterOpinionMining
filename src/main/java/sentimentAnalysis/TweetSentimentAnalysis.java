@@ -13,7 +13,10 @@ import org.json.JSONObject;
 import repository.MongoRepository;
 import utils.TransformUtil;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -27,12 +30,6 @@ public class TweetSentimentAnalysis extends SentimentAnalysis {
      * URL of sentiment analysis web api
      */
     private static final String SENTIMENT_URL = "http://text-processing.com/api/sentiment/";
-
-    /**
-     * width and height of charts which are produced by this class
-     */
-    private static final int CHART_WIDTH = 640;
-    private static final int CHART_HEIGHT = 480;
 
     //Taken from Apache Lucene project
     /*private static final HashSet<String> STOP_WORDS = new HashSet<>(
@@ -142,6 +139,8 @@ public class TweetSentimentAnalysis extends SentimentAnalysis {
             return;
         }
 
+        // This will check if a tweet has already been analyzed by looking if it has a value in its label.
+        // If it's been analyzed, there is no need for extra api calls
         // should I stay or should I go?
         if (tweet.getLabel() != null)
             return;
@@ -357,7 +356,7 @@ public class TweetSentimentAnalysis extends SentimentAnalysis {
             ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, barChartWithoutStopwords.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     barChartWithoutStopwords, CHART_WIDTH, CHART_HEIGHT);
 
-            System.out.println("\nCharts saved.");
+            System.out.println("\nCharts saved in " + chartsDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -387,7 +386,7 @@ public class TweetSentimentAnalysis extends SentimentAnalysis {
         try {
             ChartUtils.saveChartAsPNG(Paths.get(chartsDirectory, pieChart.getTitle().getText().replace(" ", "_") + ".png").toFile(),
                     pieChart, CHART_WIDTH, CHART_HEIGHT);
-            System.out.println("\nPie Chart saved in local directory.");
+            System.out.println("\nPie Chart saved in " + chartsDirectory);
         } catch (IOException e) {
             e.printStackTrace();
         }

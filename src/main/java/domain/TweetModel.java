@@ -14,6 +14,10 @@ public class TweetModel {
 
         private long userID;
 
+        private int userFollowersCount;
+
+        private int userFriendsCount;
+
         private String tweetText;
 
         private String transformedTweetText;
@@ -34,6 +38,16 @@ public class TweetModel {
 
         public Builder setUserID(long userID){
             this.userID= userID;
+            return this;
+        }
+
+        public Builder setUserFollowersCount(int userFollowersCount) {
+            this.userFollowersCount = userFollowersCount;
+            return this;
+        }
+
+        public Builder setUserFriendsCount(int userFriendsCount) {
+            this.userFriendsCount = userFriendsCount;
             return this;
         }
 
@@ -78,6 +92,10 @@ public class TweetModel {
 
     private long userID;
 
+    private int userFollowersCount;
+
+    private int userFriendsCount;
+
     private String tweetText;
 
     private String transformedTweetText;
@@ -101,13 +119,14 @@ public class TweetModel {
 
         this.tweetID = builder.tweetID;
         this.userID = builder.userID;
+        this.userFollowersCount = builder.userFollowersCount;
+        this.userFriendsCount = builder.userFriendsCount;
         this.tweetText = builder.tweetText;
         this.transformedTweetText = builder.transformedTweetText;
         this.label = builder.label;
         this.positiveProbability = builder.positiveProbability;
         this.negativeProbability = builder.negativeProbability;
         this.neutralProbability = builder.neutralProbability;
-
     }
 
     public TweetModel copy(){
@@ -115,6 +134,8 @@ public class TweetModel {
         TweetModel other = new TweetModel();
         other.tweetID = this.tweetID;
         other.userID = this.userID;
+        other.userFollowersCount = this.userFollowersCount;
+        other.userFriendsCount = this.userFriendsCount;
         other.tweetText = this.tweetText;
         other.transformedTweetText = this.transformedTweetText;
         other.label = this.label;
@@ -136,6 +157,14 @@ public class TweetModel {
 
     public long getUserID() {
         return userID;
+    }
+
+    public int getUserFollowersCount() {
+        return userFollowersCount;
+    }
+
+    public int getUserFriendsCount() {
+        return userFriendsCount;
     }
 
     public String getTweetText() {
@@ -168,6 +197,14 @@ public class TweetModel {
 
     public void setUserID(long userID) {
         this.userID = userID;
+    }
+
+    public void setUserFollowersCount(int userFollowersCount) {
+        this.userFollowersCount = userFollowersCount;
+    }
+
+    public void setUserFriendsCount(int userFriendsCount) {
+        this.userFriendsCount = userFriendsCount;
     }
 
     public void setTweetText(String tweetText) {

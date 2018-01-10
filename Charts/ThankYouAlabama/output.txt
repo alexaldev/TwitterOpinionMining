@@ -1,124 +1,0 @@
-Jan 09, 2018 5:52:37 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-Jan 09, 2018 5:52:37 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
-Jan 09, 2018 5:52:37 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:1, serverValue:281}] to localhost:27017
-Jan 09, 2018 5:52:37 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 0]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, roundTripTimeNanos=833799}
-Jan 09, 2018 5:52:37 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:2, serverValue:282}] to localhost:27017
-Mongo Repository setup ready on collection: #ThankYouAlabama
-Current entries count: 1500
-Analysing...3%Analysing...6%Tweet "Here for it!  #ThankYouAlabama" does not have any text left after transformation.
-Analysing...10%Analysing...13%Analysing...16%Analysing...20%Analysing...23%Tweet "#ThankYouAlabama s/o to the 205!" does not have any text left after transformation.
-Analysing...26%Analysing...30%Analysing...33%Analysing...36%Analysing...40%Analysing...43%Analysing...46%Tweet "Same https://t.co/OFz4LO47pt" does not have any text left after transformation.
-Analysing...50%Analysing...53%Tweet "#ThankYouAlabama It's not over. https://t.co/NMfjz2AIaC" does not have any text left after transformation.
-Tweet "This!!!! https://t.co/49CUhevhPO" does not have any text left after transformation.
-Analysing...56%Analysing...60%Analysing...63%Analysing...66%Analysing...70%Analysing...73%Analysing...76%Analysing...80%Analysing...83%Analysing...86%Analysing...90%Analysing...93%Analysing...96%Analysing...100%Top 50 words included stopwords:
- 1. the                 755
- 2. to                  490
- 3. a                   436
- 4. for                 428
- 5. you                 393
- 6. and                 389
- 7. of                  330
- 8. in                  266
- 9. alabama             237
-10. is                  233
-11. i                   201
-12. that                192
-13. this                180
-14. moore               131
-15. it                  131
-16. your                121
-17. not                 115
-18. thank               113
-19. we                  113
-20. are                 106
-21. roy                 101
-22. realdonaldtrump     100
-23. on                  100
-24. all                 100
-25. people               97
-26. was                  92
-27. have                 90
-28. black                89
-29. jones                88
-30. up                   87
-31. be                   85
-32. now                  84
-33. who                  83
-34. so                   76
-35. with                 76
-36. dougjones            76
-37. will                 74
-38. women                71
-39. doug                 69
-40. my                   67
-41. trump                64
-42. they                 63
-43. good                 62
-44. he                   62
-45. vote                 62
-46. but                  62
-47. out                  61
-48. wednesdaywisdom      61
-49. just                 61
-50. can                  61
-
-Top 50 words without stopwords:
- 1. alabama             237
- 2. moore               131
- 3. thank               113
- 4. roy                 101
- 5. realdonaldtrump     100
- 6. people               97
- 7. black                89
- 8. jones                88
- 9. dougjones            76
-10. women                71
-11. doug                 69
-12. trump                64
-13. good                 62
-14. vote                 62
-15. wednesdaywisdom      61
-16. like                 59
-17. right                57
-18. still                55
-19. win                  53
-20. hope                 53
-21. today                52
-22. white                50
-23. get                  50
-24. voters               47
-25. one                  47
-26. im                   45
-27. america              45
-28. morning              45
-29. country              44
-30. know                 44
-31. voted                41
-32. thankyoualabama      40
-33. us                   40
-34. child                40
-35. won                  39
-36. blackwomen           38
-37. gop                  38
-38. last                 37
-39. lost                 36
-40. time                 36
-41. state                35
-42. loser                35
-43. election             33
-44. senate               33
-45. party                33
-46. would                31
-47. lets                 31
-48. night                31
-49. molester             31
-50. pedophile            31
-
-Charts saved.
-
-Pie Chart saved in local directory.

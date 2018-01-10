@@ -3,7 +3,6 @@ import com.beust.jcommander.JCommander;
 import repository.MongoRepository;
 import sentimentAnalysis.TweetSentimentAnalysis;
 import sentimentAnalysis.UserSentimentAnalysis;
-import twitter4j.TwitterException;
 
 /**
  * CLASS DESCRIPTION HERE
@@ -22,19 +21,17 @@ public class Main {
     public static void main(String[] args){
 
         /* CLI parsing */
-
         MainArgs mainArgs = new MainArgs();
-
         CollectArgs collectArgs = new CollectArgs();
         PrintCollectionArgs printArgs = new PrintCollectionArgs();
-        TweetSentimentAnalysisArgs tweetSentimentAnalysisArgs = new TweetSentimentAnalysisArgs();
+        SentimentAnalysisArgs sentimentAnalysisArgs = new SentimentAnalysisArgs();
 
         JCommander jc = JCommander.newBuilder()
                 .addObject(mainArgs)
                 .addCommand("collect", collectArgs)
                 .addCommand("print-collection", printArgs)
-                .addCommand("tweet-analyze", tweetSentimentAnalysisArgs)
-                .addCommand("user-analyze", tweetSentimentAnalysisArgs)
+                .addCommand("tweet-analyze", sentimentAnalysisArgs)
+                .addCommand("user-analyze", sentimentAnalysisArgs)
                 .build();
 
         jc.setProgramName(PROGRAM_NAME);
@@ -56,45 +53,26 @@ public class Main {
 
         /* <--- End of CLI parsing */
 
+        // Command based execution
         switch (jc.getParsedCommand()) {
             case "collect":
-
                 TweetsCollector.newInstance(collectArgs.getHashtag(), DATABASE_NAME, collectArgs.getMongoHost(), collectArgs.getMongoPort())
                         .startCollecting();
-
                 break;
             case "print-collection":
-
                 TweetsCollector.newInstance(printArgs.getHashtag(),DATABASE_NAME, printArgs.getMongoHost(), printArgs.getMongoPort())
                         .printCollection(printArgs.isShort());
-
                 break;
             case "tweet-analyze":
-/*
-                TweetModel tweetModel = new TweetModel.Builder()
-                        .setTweetID(102)
-                        .setTweetText("It was awesome so god damn!111!! awesome the celebrations were ... AWESOME ")
-                        .create();
-
-                System.out.println("Transforming tweet...");
-                tweetModel = TweetTransformer.newInstance().transformTweet(tweetModel);
-
-                System.out.println(tweetModel.getTweetText());
-*/
-                TweetSentimentAnalysis sa = new TweetSentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysisArgs.getHashtag()));
+                TweetSentimentAnalysis sa = new TweetSentimentAnalysis(MongoRepository.newInstance(sentimentAnalysisArgs.getHashtag()));
                 sa.analyze();
-                sa.printFrequents(50, tweetSentimentAnalysisArgs.getChartsDirectory());
-                sa.printSentiment(tweetSentimentAnalysisArgs.getChartsDirectory());
+                sa.printFrequents(50, sentimentAnalysisArgs.getChartsDirectory());
+                sa.printSentiment(sentimentAnalysisArgs.getChartsDirectory());
                 break;
             case "user-analyze":
-                UserSentimentAnalysis us = new UserSentimentAnalysis(MongoRepository.newInstance(tweetSentimentAnalysisArgs.getHashtag()));/*
-                try {
-                    double d = us.calculateFollowersFriendsRatio(33331626);
-                    System.out.println("d = " + d);
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                }*/
-                us.produceCumulativeDistributionFrequency();
+                UserSentimentAnalysis us = new UserSentimentAnalysis(MongoRepository.newInstance(sentimentAnalysisArgs.getHashtag()));
+                us.storeUsersSentimentScore();
+                us.produceCumulativeDistributionFrequency(sentimentAnalysisArgs.getChartsDirectory());
                 break;
         }
 

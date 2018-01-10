@@ -32,6 +32,8 @@ public class TweetModelParser {
     public static TweetModel parseFrom(Status status){
         return new TweetModel.Builder()
                 .setUserID(status.getUser().getId())
+                .setUserFollowersCount(status.getUser().getFollowersCount())
+                .setUserFriendsCount(status.getUser().getFriendsCount())
                 .setTweetID(status.getId())
                 .setTweetText(status.getText())
                 .create();
