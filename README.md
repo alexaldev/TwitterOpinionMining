@@ -1,15 +1,16 @@
 # TwitterOpinionMining
 
 
-Use commands for each part of the project.
-Command `collect`: Parts 1 & 2, Collect and store tweets
-Command `print`: Collection with tweets printing
-Command `tweet-analyze`: Parts 3 & 4, Transform and sentiment analysis in tweets
-Command `user-analyze`: Part 5, User analysis
+Use commands for each part of the project.  
+Command `collect`: Parts 1 & 2, Collect and store tweets.  
+Command `print`: Collection with tweets printing.  
+Command `tweet-analyze`: Parts 3 & 4, Transform and sentiment analysis in tweets.  
+Command `user-analyze`: Part 5, User analysis.  
 
-Help message:
-
+Help message:  
+```
 java -cp out/artifacts/core_jar/core.jar Main --help
+```
 
     Usage: Main [options] [command] [command options]
       Options:
