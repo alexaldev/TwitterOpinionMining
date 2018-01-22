@@ -1,141 +1,0 @@
-Jan 02, 2018 9:02:19 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
-Jan 02, 2018 9:02:19 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, serverDescriptions=[ServerDescription{address=localhost:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
-Jan 02, 2018 9:02:19 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:1, serverValue:272}] to localhost:27017
-Jan 02, 2018 9:02:19 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 6, 0]}, minWireVersion=0, maxWireVersion=6, maxDocumentSize=16777216, roundTripTimeNanos=830178}
-Jan 02, 2018 9:02:19 PM com.mongodb.diagnostics.logging.JULLogger log
-INFO: Opened connection [connectionId{localValue:2, serverValue:273}] to localhost:27017
-Mongo Repository setup ready on collection: #WriteAHappyStoryIn4Words
-Current entries count: 1500
-Analysing...3%Tweet "Same. https://t.co/qKnp8F2yiJ" does not have any text left after transformation.
-Analysing...6%Analysing...10%Tweet "But he does not.
-
-#WriteAHappyStoryIn4Words" does not have any text left after transformation.
-Tweet "Will you have her?
-
-#WriteAHappyStoryIn4Words" does not have any text left after transformation.
-Tweet "#WriteAHappyStoryIn4Words I can be me." does not have any text left after transformation.
-Tweet "And why should they? #WriteAHappyStoryIn4Words" does not have any text left after transformation.
-Analysing...13%Tweet "#WriteAHappyStoryIn4Words Who was with him?" does not have any text left after transformation.
-Analysing...16%Tweet "#WriteAHappyStoryIn4Words
-And that was all?" does not have any text left after transformation.
-Tweet "#WriteAHappyStoryIn4Words You have it there." does not have any text left after transformation.
-Tweet "#WriteAHappyStoryIn4Words "Who are they then?"" does not have any text left after transformation.
-Tweet "Where was she now?
-#WriteAHappyStoryIn4Words" does not have any text left after transformation.
-Tweet "SO 
-DID
-I? https://t.co/FrNLCPc7Xf" does not have any text left after transformation.
-Analysing...20%Tweet "This. https://t.co/hLDrcsZFP5" does not have any text left after transformation.
-Tweet "But who were they? #WriteAHappyStoryIn4Words" does not have any text left after transformation.
-Analysing...23%Analysing...26%Analysing...30%Analysing...33%Analysing...36%Analysing...40%Analysing...43%Analysing...46%Analysing...50%Analysing...53%Analysing...56%Analysing...60%Analysing...63%Analysing...66%Analysing...70%Analysing...73%Analysing...76%Analysing...80%Analysing...83%Analysing...86%Analysing...90%Analysing...93%Analysing...96%Analysing...100%Top 50 words included stopwords:
- 1. the                 210
- 2. i                   187
- 3. is                  159
- 4. a                   106
- 5. you                 102
- 6. my                   87
- 7. and                  72
- 8. it                   71
- 9. this                 71
-10. of                   67
-11. to                   67
-12. in                   63
-13. fabric               62
-14. me                   61
-15. writeahappystoryinwords   58
-16. yards                54
-17. for                  54
-18. was                  52
-19. love                 51
-20. on                   46
-21. are                  45
-22. not                  45
-23. trump                45
-24. he                   43
-25. that                 40
-26. we                   37
-27. be                   36
-28. all                  32
-29. im                   31
-30. they                 31
-31. your                 30
-32. governor             30
-33. will                 30
-34. got                  29
-35. today                29
-36. what                 29
-37. with                 28
-38. she                  26
-39. silk                 26
-40. happy                25
-41. can                  25
-42. has                  24
-43. up                   23
-44. have                 22
-45. at                   22
-46. her                  21
-47. its                  21
-48. now                  21
-49. no                   21
-50. just                 20
-
-Top 50 words without stopwords:
- 1. fabric               62
- 2. writeahappystoryinwords   58
- 3. yards                54
- 4. love                 51
- 5. trump                45
- 6. im                   31
- 7. governor             30
- 8. got                  29
- 9. today                29
-10. silk                 26
-11. happy                25
-12. rt                   19
-13. god                  18
-14. franken              18
-15. alfranken            18
-16. designer             18
-17. damask               18
-18. story                18
-19. velvet               16
-20. finally              16
-21. talal                16
-22. new                  16
-23. one                  16
-24. pokemon              15
-25. still                15
-26. king                 15
-27. beautiful            14
-28. go                   14
-29. cut                  13
-30. time                 13
-31. day                  13
-32. back                 13
-33. forever              13
-34. always               13
-35. gold                 12
-36. check                12
-37. let                  12
-38. house                12
-39. donald               12
-40. thomasfire           12
-41. us                   12
-42. lee                  11
-43. multi                11
-44. coming               11
-45. free                 11
-46. star                 11
-47. like                 11
-48. impeached            10
-49. better               10
-50. ever                 10
-Fontconfig warning: ignoring UTF-8: not a valid region tag
-
-Charts saved.
-
-Pie Chart saved in local directory.
