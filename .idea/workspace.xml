@@ -6,66 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ba25a33-234e-47ef-ae44-c4d6f8b24635" name="Default" comment="Implemented the tweet text transformations">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/PortAuthority/ouput.txt" afterPath="$PROJECT_DIR$/Charts.old/PortAuthority/ouput.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/SkirballFire/ouput.txt" afterPath="$PROJECT_DIR$/Charts.old/SkirballFire/ouput.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/ThankYouAlabama/output.txt" afterPath="$PROJECT_DIR$/Charts.old/ThankYouAlabama/output.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/TimesSquare/output.txt" afterPath="$PROJECT_DIR$/Charts.old/TimesSquare/output.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/WriteAHappyStoryIn4Words/output.txt" afterPath="$PROJECT_DIR$/Charts.old/WriteAHappyStoryIn4Words/output.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/All_words_Zipf_diagram.png" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/All_words_Zipf_diagram.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/All_words_count.png" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/All_words_count.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/Sentiment_Pie_Chart.png" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/Sentiment_Pie_Chart.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/Top_50_words_included_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/Top_50_words_included_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/Top_50_words_without_stopwords.png" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/Top_50_words_without_stopwords.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Charts/jerusalem/output.txt" afterPath="$PROJECT_DIR$/Charts.old/jerusalem/output.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/args/TweetSentimentAnalysisArgs.java" afterPath="$PROJECT_DIR$/src/main/java/args/SentimentAnalysisArgs.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/core_jar/core.jar" afterPath="$PROJECT_DIR$/out/artifacts/core_jar/core.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/Main.class" afterPath="$PROJECT_DIR$/out/production/classes/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/TweetsCollector.class" afterPath="$PROJECT_DIR$/out/production/classes/TweetsCollector.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/domain/TweetModel$Builder.class" afterPath="$PROJECT_DIR$/out/production/classes/domain/TweetModel$Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/domain/TweetModel.class" afterPath="$PROJECT_DIR$/out/production/classes/domain/TweetModel.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/domain/TweetModelParser.class" afterPath="$PROJECT_DIR$/out/production/classes/domain/TweetModelParser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/repository/MongoRepository.class" afterPath="$PROJECT_DIR$/out/production/classes/repository/MongoRepository.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/SentimentAnalysis.class" afterPath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/SentimentAnalysis.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/TweetSentimentAnalysis.class" afterPath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/TweetSentimentAnalysis.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/UserSentimentAnalysis.class" afterPath="$PROJECT_DIR$/out/production/classes/sentimentAnalysis/UserSentimentAnalysis.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Main.java" afterPath="$PROJECT_DIR$/src/main/java/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/TweetsCollector.java" afterPath="$PROJECT_DIR$/src/main/java/TweetsCollector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/args/CollectArgs.java" afterPath="$PROJECT_DIR$/src/main/java/args/CollectArgs.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/domain/TweetModel.java" afterPath="$PROJECT_DIR$/src/main/java/domain/TweetModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/domain/TweetModelParser.java" afterPath="$PROJECT_DIR$/src/main/java/domain/TweetModelParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/repository/MongoRepository.java" afterPath="$PROJECT_DIR$/src/main/java/repository/MongoRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/SentimentAnalysis.java" afterPath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/SentimentAnalysis.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/TweetSentimentAnalysis.java" afterPath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/TweetSentimentAnalysis.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/UserSentimentAnalysis.java" afterPath="$PROJECT_DIR$/src/main/java/sentimentAnalysis/UserSentimentAnalysis.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/twitter/Constants.java" afterPath="$PROJECT_DIR$/src/main/java/twitter/Constants.java" />
-    </list>
+    <list default="true" id="1ba25a33-234e-47ef-ae44-c4d6f8b24635" name="Default" comment="Implemented the tweet text transformations" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -86,8 +27,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="57" column="27" lean-forward="false" selection-start-line="57" selection-start-column="27" selection-end-line="57" selection-end-column="27" />
+            <state relative-caret-position="465">
+              <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1355,8 +1296,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="57" column="27" lean-forward="false" selection-start-line="57" selection-start-column="27" selection-end-line="57" selection-end-column="27" />
+        <state relative-caret-position="465">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding />
         </state>
       </provider>
