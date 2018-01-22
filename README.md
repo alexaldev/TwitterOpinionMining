@@ -10,10 +10,10 @@ Command `user-analyze`: Part 5, User analysis
 Help message:
 
 java -cp out/artifacts/core_jar/core.jar Main --help
-Usage: Main [options] [command] [command options]
-  Options:
-    -h, --help
-      Prints help message
+  Usage: Main [options] [command] [command options]
+    Options:
+      -h, --help
+        Prints help message
   Commands:
     collect      Collects tweets and stores them in a mongoDB collection
       Usage: collect [options] <search keyword>
